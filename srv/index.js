@@ -36,7 +36,11 @@ export default (app, http) => {
     const room_id = queryValue(req, "room_id")
     const message_id = queryValue(req, "message_id")
     axios
-      .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`)
+      .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`, { 
+        headers: {
+          "x-chatworktoken": process.env.VUE_APP_CHATWORK_API_TOKEN
+        } 
+      })
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
         res.json(data)
