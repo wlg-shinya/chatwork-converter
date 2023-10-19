@@ -10,7 +10,9 @@
     "express:run": "vue-cli-service express:run"
   },
   "dependencies": {
+    "body-parser": "^1.20.2",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
     "vue": "^3.2.13"
   },
   "devDependencies": {
