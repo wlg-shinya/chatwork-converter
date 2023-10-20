@@ -7,6 +7,8 @@ const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 
 const CHATWORK_NAME = "Chatwork"
+const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
+const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
 
 const messageURL = ref("")
 const targetMessageCount = ref(5)
@@ -40,13 +42,22 @@ function formatBold(text: string) {
   }
 }
 
+function validate() {
+  // URLが入力されていなければ無効
+  if (!messageURL.value) return false
+  // 不正なURLなら無効
+  if (!messageURL.value.match(MESSAGE_URL_REQEXP)) return false
+  // 取得件数が範囲外なら無効
+  if (targetMessageCount.value < TARGET_MESSAGE_COUNT.MIN || targetMessageCount.value > TARGET_MESSAGE_COUNT.MAX) {
+    return false
+  }
+  // チェックを通過したので有効
+  return true
+}
+
 function createOutputText() {
   const url = messageURL.value
-  if (!url) return
-
-  const match = url.match(/.*rid([0-9]+)-([0-9]+)/)
-  if (!match) return
-
+  const match = url.match(MESSAGE_URL_REQEXP) ?? [] // ts警告回避。nullではないことはvalidate()で保証する
   const roomId = match[1]
   const messageId = match[2]
   const count = targetMessageCount.value
@@ -127,7 +138,9 @@ function copyOutputText() {
         <label class="font-weight-bold">使い方</label>
         <ol>
           <li>{{ CHATWORK_NAME }}で残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
-          <li>出力結果をコピーします。末尾にある <fa icon="copy" /> を押してもコピーされます。手動でも大丈夫です</li>
+          <li>出力結果をコピーします。末尾にある
+            <fa icon="copy" /> を押してもコピーされます。手動でも大丈夫です
+          </li>
           <li>{{ howToPaste }}</li>
         </ol>
       </div>
@@ -137,7 +150,8 @@ function copyOutputText() {
       </div>
       <div class="form-group">
         <label class="font-weight-bold">何件先まで変換するか</label>
-        <input v-model="targetMessageCount" type="number" class="form-control" />
+        <input v-model="targetMessageCount" type="number" :min="TARGET_MESSAGE_COUNT.MIN" :max="TARGET_MESSAGE_COUNT.MAX"
+          class="form-control" />
       </div>
       <div class="form-group">
         <label class="font-weight-bold">フォーマット</label>
@@ -145,16 +159,16 @@ function copyOutputText() {
           <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
         </select>
       </div>
-      <button @click="createOutputText()" class="btn btn-success btn-lg">変換</button>
+      <button @click="createOutputText()" :disabled="!validate()" class="btn btn-success btn-lg">変換</button>
       <br><br>
       <div class="form-group">
         <label class="font-weight-bold">出力結果</label>
         <div v-if="outputText">
           <div class="alert alert-success" style="user-select:all;">
-            <pre style="text-align:left;">{{ outputText }}</pre>
             <button @click="copyOutputText()" class="btn btn-outline-success">
               <fa icon="copy" />
             </button>
+            <pre style="text-align:left;">{{ outputText }}</pre>
           </div>
         </div>
       </div>
