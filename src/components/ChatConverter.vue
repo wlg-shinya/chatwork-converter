@@ -23,9 +23,11 @@ function test() {
     })
     .then((response) => {
       const data = JSON.parse(JSON.stringify(response.data))
-      let startIndex = -1
+      // 削除済みメッセージを除外
+      const messages = data.filter((x: any) => x.body != "[deleted]")
       // 指定メッセージがどこにあるか特定する
-      data.some((x: any, i: number) => {
+      let startIndex = -1
+      messages.some((x: any, i: number) => {
         if (x.message_id == messageId) {
           startIndex = i
           return true
@@ -34,9 +36,9 @@ function test() {
         }
       })
       // 指定メッセージから指定数分のメッセージを収集
-      const endIndex = startIndex + count < data.length ? startIndex + count : data.length
-      const targetMessage = data.slice(startIndex, endIndex)
-      console.log(targetMessage)
+      const endIndex = startIndex + count < messages.length ? startIndex + count : messages.length
+      const targetMessages = messages.slice(startIndex, endIndex)
+      console.log(targetMessages)
     })
     .catch((err: any) => {
       throw err
