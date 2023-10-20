@@ -9,7 +9,7 @@ const CHATWORK_NAME = "Chatwork"
 
 const messageURL = ref("")
 const targetMessageCount = ref(5)
-const outputText = ref("")
+const outputText = ref("b")
 const formatKey = ref("confluence")
 
 const howToPaste = computed(() => {
@@ -145,8 +145,10 @@ function copyOutputText() {
       <div class="form-group">
         <label class="font-weight-bold">出力結果</label>
         <div v-if="outputText">
-          <pre class="alert alert-primary" style="text-align:left;user-select:all;">{{ outputText }}</pre>
-          <button @click="copyOutputText()" class="btn btn-primary btn-lg">コピー</button>
+          <div class="alert alert-primary">
+            <pre style="text-align:left;user-select:all;">{{ outputText }}</pre>
+            <button @click="copyOutputText()" class="btn">C</button>
+          </div>
         </div>
       </div>
     </div>
