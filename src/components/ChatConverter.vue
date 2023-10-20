@@ -6,6 +6,7 @@ import { notify } from "@kyvg/vue3-notification"
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 
+const ADMIN_EMAIL="s-watanabe@three-rings.net"
 const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
@@ -172,6 +173,13 @@ function copyOutputText() {
           </div>
         </div>
       </div>
+    </div>
+    <div class="card-footer">
+      <ul>
+        <li>フォーマットを増やしてほしい！</li>
+        <li>〇〇な機能に対応してほしい！</li>
+      </ul>
+      ご要望は {{ CHATWORK_NAME }} の {{ADMIN_EMAIL}} までご連絡ください  
     </div>
   </div>
 </template>
