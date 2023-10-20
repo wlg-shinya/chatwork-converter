@@ -116,7 +116,7 @@ ${message}
     <div class="form-group">
       <label class="font-weight-bold">使い方</label>
       <ol>
-        <li>出力結果に表示されたものをクリックすると全選択できますのでコピーしてください</li>
+        <li>出力結果に表示されたものをコピーしてください。クリックすると全選択できます</li>
         <li>{{ howToPaste }}</li>
       </ol>
     </div>
