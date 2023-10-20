@@ -15,9 +15,12 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas)
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+// vue3-notification
+import Notifications from '@kyvg/vue3-notification'
 
 createApp(App)
     .use(VueAxios, axios)
+    .use(Notifications)
     .component('fa', FontAwesomeIcon)
     .mount('#app')
 
