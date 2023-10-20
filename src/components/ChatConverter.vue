@@ -105,35 +105,37 @@ function copyOutputText() {
     <div class="card-header h1">
       {{ CHATWORK_NAME }}コンバーター
     </div>
-    <div  class="card-body">
-      <label class="font-weight-bold">使い方</label>
-      <ol>
-        <li>{{ CHATWORK_NAME }}で残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
-        <li>出力結果をコピーします。末尾にあるコピーボタンを押してもコピーされます。手動でも大丈夫です</li>
-        <li>{{ howToPaste }}</li>
-      </ol>
-    </div>
-    <div class="form-group">
-      <label class="font-weight-bold">先頭メッセージリンク</label>
-      <input v-model="messageURL" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label class="font-weight-bold">何件先まで変換するか</label>
-      <input v-model="targetMessageCount" type="number" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label class="font-weight-bold">フォーマット</label>
-      <select v-model="formatKey" class="custom-select">
-        <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
-      </select>
-    </div>
-    <button @click="createOutputText()" class="btn btn-primary btn-lg">変換</button>
-    <br><br>
-    <div class="form-group">
-      <label class="font-weight-bold">出力結果</label>
-      <div v-if="outputText">
-        <pre class="alert alert-primary" style="text-align:left;">{{ outputText }}</pre>
-        <button @click="copyOutputText()" class="btn btn-primary btn-lg">コピー</button>
+    <div class="card-body d-flex flex-column">
+      <div>
+        <label class="font-weight-bold">使い方</label>
+        <ol>
+          <li>{{ CHATWORK_NAME }}で残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
+          <li>出力結果をコピーします。末尾にあるコピーボタンを押してもコピーされます。手動でも大丈夫です</li>
+          <li>{{ howToPaste }}</li>
+        </ol>
+      </div>
+      <div class="form-group">
+        <label class="font-weight-bold">先頭メッセージリンク</label>
+        <input v-model="messageURL" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label class="font-weight-bold">何件先まで変換するか</label>
+        <input v-model="targetMessageCount" type="number" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label class="font-weight-bold">フォーマット</label>
+        <select v-model="formatKey" class="custom-select">
+          <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
+        </select>
+      </div>
+      <button @click="createOutputText()" class="btn btn-primary btn-lg">変換</button>
+      <br><br>
+      <div class="form-group">
+        <label class="font-weight-bold">出力結果</label>
+        <div v-if="outputText">
+          <pre class="alert alert-primary" style="text-align:left;">{{ outputText }}</pre>
+          <button @click="copyOutputText()" class="btn btn-primary btn-lg">コピー</button>
+        </div>
       </div>
     </div>
   </div>
