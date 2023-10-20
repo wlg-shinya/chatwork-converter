@@ -3,6 +3,7 @@ import { ref } from "vue"
 import axios from "axios"
 
 const messageURL = ref("")
+const targetMessageCount = ref(5)
 
 function test() {
   const url = messageURL.value
@@ -13,7 +14,7 @@ function test() {
 
   const roomId = match[1]
   const messageId = match[2]
-  const count = 5
+  const count = targetMessageCount.value
 
   axios
     .get("/api/chatwork_get_messages", {
@@ -49,6 +50,7 @@ function test() {
 <template>
   <div>
     <input v-model="messageURL" />
+    <input v-model="targetMessageCount" type="number"/>
     <button @click="test()">test</button>
   </div>
 </template>
