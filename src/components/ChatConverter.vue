@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import axios from "axios"
 
 const FORMAT = new Map()
@@ -9,6 +9,16 @@ const messageURL = ref("")
 const targetMessageCount = ref(5)
 const outputText = ref("")
 const formatKey = ref("confluence")
+
+
+const howToPaste = computed(() => {
+  switch (formatKey.value) {
+    case "confluence":
+      return "Confluence編集画面にて挿入したい場所で＋ボタン押下後マークアップを選択。表示された画面で\"ConfluenceWiki\"を選択してペーストしてください"
+    default:
+      return ""
+  }
+})
 
 function formatLink(link: string, text = "") {
   switch (formatKey.value) {
@@ -83,25 +93,38 @@ ${message}
       throw err
     })
 }
-
-function copyOutputText() {
-  console.log("copyOutputText")
-}
 </script>
 
 <template>
   <div>
-    <label>変換したいメッセージのリンク</label>
-    <input v-model="messageURL" />
-    <label>何件先まで変換するか</label>
-    <input v-model="targetMessageCount" type="number" />
-    <label>変換フォーマット</label>
-    <select v-model="formatKey">
-      <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
-    </select>
-    <button @click="createOutputText()">create</button>
-    <label>出力結果</label>
-    <pre style="text-align: left">{{ outputText }}</pre>
-    <button v-if="outputText" @click="copyOutputText()">copy</button>
+    <div class="form-group">
+      <label class="font-weight-bold">変換したいメッセージのリンク</label>
+      <input v-model="messageURL" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label class="font-weight-bold">何件先まで変換するか</label>
+      <input v-model="targetMessageCount" type="number" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label class="font-weight-bold">変換フォーマット</label>
+      <select v-model="formatKey" class="custom-select">
+        <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
+      </select>
+    </div>
+    <button @click="createOutputText()" class="btn btn-primary">create</button>
+    <br><br>
+    <div class="form-group">
+      <label class="font-weight-bold">使い方</label>
+      <ol>
+        <li>出力結果に表示されたものをクリックすると全選択できますのでコピーしてください</li>
+        <li>{{ howToPaste }}</li>
+      </ol>
+    </div>
+    <div class="form-group">
+      <label class="font-weight-bold">出力結果</label>
+      <div v-if="outputText">
+        <pre class="alert alert-primary" style="text-align:left;user-select:all;">{{ outputText }}</pre>
+      </div>
+    </div>
   </div>
 </template>
