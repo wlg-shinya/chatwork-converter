@@ -96,7 +96,19 @@ ${message}
 }
 
 function copyOutputText() {
-  console.log("copyOutputText")
+  if (typeof navigator.clipboard === "undefined") {
+    // クリップボードが使えないので何もしない
+    return
+  }
+
+  // クリップボードに出力文字列をコピー
+  navigator.clipboard.writeText(outputText.value)
+    .then(() => {
+      console.log("copy!")
+    })
+    .catch((err: any) => {
+      throw err
+    })
 }
 </script>
 
@@ -133,7 +145,7 @@ function copyOutputText() {
       <div class="form-group">
         <label class="font-weight-bold">出力結果</label>
         <div v-if="outputText">
-          <pre class="alert alert-primary" style="text-align:left;">{{ outputText }}</pre>
+          <pre class="alert alert-primary" style="text-align:left;user-select:all;">{{ outputText }}</pre>
           <button @click="copyOutputText()" class="btn btn-primary btn-lg">コピー</button>
         </div>
       </div>
