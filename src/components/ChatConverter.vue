@@ -47,11 +47,16 @@ function test() {
         const message = x.body
         const time = new Date(x.send_time * 1000) // send_time は秒なのでミリ秒に変換
           .toLocaleString("ja-JP") // 日付時刻情報を日本向けに変換
+        const originalUrl = url.replace(/[0-9]+$/, x.message_id)
 
-        outputText.value += `*${name}* ${time}\n`
-        outputText.value += `${message}\n`
-        outputText.value += "----\n"
+        outputText.value += `
+*${name}* ${time}
+${message}
+[投稿元メッセージ|${originalUrl}]\n
+----
+`
       })
+      outputText.value += `この文章は [${document.title}|${process.env.VUE_APP_BASE_URL}] によって生成されました`
     })
     .catch((err: any) => {
       throw err
