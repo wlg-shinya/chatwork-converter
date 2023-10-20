@@ -7,18 +7,10 @@ npm install --force
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run serve && npm run express
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+npm run build && npm run express:run
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
