@@ -5,6 +5,8 @@ import axios from "axios"
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 
+const CHATWORK_NAME = "Chatwork"
+
 const messageURL = ref("")
 const targetMessageCount = ref(5)
 const outputText = ref("")
@@ -99,11 +101,14 @@ function copyOutputText() {
 </script>
 
 <template>
-  <div>
-    <div>
+  <div class="card mx-5">
+    <div class="card-header h1">
+      {{ CHATWORK_NAME }}コンバーター
+    </div>
+    <div  class="card-body">
       <label class="font-weight-bold">使い方</label>
       <ol>
-        <li>chatworkで残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
+        <li>{{ CHATWORK_NAME }}で残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
         <li>出力結果をコピーします。末尾にあるコピーボタンを押してもコピーされます。手動でも大丈夫です</li>
         <li>{{ howToPaste }}</li>
       </ol>
