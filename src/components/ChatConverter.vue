@@ -100,14 +100,20 @@ function createOutputText() {
         targetMessages = messages.slice(startIndex, endIndex)
       } else {
         // 特定できなかったので指定メッセージだけ改めて取得
-        const response2 = await axios.get("/api/chatwork_get_message", {
-          params: {
-            room_id: roomId,
-            message_id: messageId,
-          },
-        })
-        const data = JSON.parse(JSON.stringify(response2.data))
-        targetMessages.push(data)
+        await axios
+          .get("/api/chatwork_get_message", {
+            params: {
+              room_id: roomId,
+              message_id: messageId,
+            },
+          })
+          .then((response2) => {
+            const data = JSON.parse(JSON.stringify(response2.data))
+            targetMessages.push(data)
+          })
+          .catch((err: any) => {
+            throw err
+          })
       }
       // メッセージを出力用に整形
       outputText.value = `${formatSeparator()}`
