@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue"
 import axios from "axios"
+import { notify } from "@kyvg/vue3-notification"
 
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
@@ -104,7 +105,10 @@ function copyOutputText() {
   // クリップボードに出力文字列をコピー
   navigator.clipboard.writeText(outputText.value)
     .then(() => {
-      console.log("copy!")
+      notify({
+        type: "success",
+        text: "クリップボードにコピーしました",
+      })
     })
     .catch((err: any) => {
       throw err
@@ -113,6 +117,7 @@ function copyOutputText() {
 </script>
 
 <template>
+  <notifications position="bottom center" />
   <div class="card mx-5">
     <div class="card-header h1">
       {{ CHATWORK_NAME }}コンバーター
@@ -122,7 +127,7 @@ function copyOutputText() {
         <label class="font-weight-bold">使い方</label>
         <ol>
           <li>{{ CHATWORK_NAME }}で残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
-          <li>出力結果をコピーします。末尾にあるコピーボタンを押してもコピーされます。手動でも大丈夫です</li>
+          <li>出力結果をコピーします。末尾にある <fa icon="copy" /> を押してもコピーされます。手動でも大丈夫です</li>
           <li>{{ howToPaste }}</li>
         </ol>
       </div>
@@ -140,14 +145,16 @@ function copyOutputText() {
           <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
         </select>
       </div>
-      <button @click="createOutputText()" class="btn btn-primary btn-lg">変換</button>
+      <button @click="createOutputText()" class="btn btn-success btn-lg">変換</button>
       <br><br>
       <div class="form-group">
         <label class="font-weight-bold">出力結果</label>
         <div v-if="outputText">
-          <div class="alert alert-primary">
-            <pre style="text-align:left;user-select:all;">{{ outputText }}</pre>
-            <button @click="copyOutputText()" class="btn btn-outline-primary"><fa icon="copy" /></button>
+          <div class="alert alert-success" style="user-select:all;">
+            <pre style="text-align:left;">{{ outputText }}</pre>
+            <button @click="copyOutputText()" class="btn btn-outline-success">
+              <fa icon="copy" />
+            </button>
           </div>
         </div>
       </div>
