@@ -4,6 +4,7 @@ import axios from "axios"
 
 const messageURL = ref("")
 const targetMessageCount = ref(5)
+const outputText = ref("")
 
 function test() {
   const url = messageURL.value
@@ -39,7 +40,18 @@ function test() {
       // 指定メッセージから指定数分のメッセージを収集
       const endIndex = startIndex + count < messages.length ? startIndex + count : messages.length
       const targetMessages = messages.slice(startIndex, endIndex)
-      console.log(targetMessages)
+      // メッセージを出力用に整形
+      outputText.value = "----\n"
+      targetMessages.forEach((x: any) => {
+        const name = x.account.name
+        const message = x.body
+        const time = new Date(x.send_time * 1000) // send_time は秒なのでミリ秒に変換
+          .toLocaleString("ja-JP") // 日付時刻情報を日本向けに変換
+
+        outputText.value += `*${name}* ${time}\n`
+        outputText.value += `${message}\n`
+        outputText.value += "----\n"
+      })
     })
     .catch((err: any) => {
       throw err
@@ -50,7 +62,8 @@ function test() {
 <template>
   <div>
     <input v-model="messageURL" />
-    <input v-model="targetMessageCount" type="number"/>
+    <input v-model="targetMessageCount" type="number" />
     <button @click="test()">test</button>
+    <pre style="text-align: left">{{ outputText }}</pre>
   </div>
 </template>
