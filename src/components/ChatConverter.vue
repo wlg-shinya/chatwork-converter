@@ -110,7 +110,7 @@ ${message}
         <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
       </select>
     </div>
-    <button @click="createOutputText()" class="btn btn-primary">変換</button>
+    <button @click="createOutputText()" class="btn btn-primary btn-lg">変換</button>
     <br><br>
     <div class="form-group">
       <label class="font-weight-bold">使い方</label>
