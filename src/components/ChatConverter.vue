@@ -8,6 +8,7 @@ FORMAT.set("confluence", "Confluence Wiki")
 
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
 const CHATWORK_NAME = "Chatwork"
+const APP_NAME = `${CHATWORK_NAME}コンバーター`
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
 
@@ -40,6 +41,15 @@ function formatBold(text: string) {
       return `*${text}*`
     default:
       return text
+  }
+}
+
+function formatSeparator() {
+  switch (formatKey.value) {
+    case "confluence":
+      return "----"
+    default:
+      return ""
   }
 }
 
@@ -87,7 +97,7 @@ function createOutputText() {
       const endIndex = startIndex + count < messages.length ? startIndex + count : messages.length
       const targetMessages = messages.slice(startIndex, endIndex)
       // メッセージを出力用に整形
-      outputText.value = "----\n"
+      outputText.value = `${formatSeparator()}`
       targetMessages.forEach((x: any) => {
         const name = x.account.name
         const message = x.body
@@ -98,10 +108,9 @@ function createOutputText() {
         outputText.value += `
 ${formatBold(name)} ${time} ${formatLink(originalUrl, '投稿元')}
 ${message}
-----
-`
+${formatSeparator()}`
       })
-      outputText.value += `この文章は ${formatLink(process.env.VUE_APP_BASE_URL, document.title)} によって生成されました`
+      outputText.value += `\nこの文章は ${formatLink(process.env.VUE_APP_BASE_URL, APP_NAME)} によって生成されました`
     })
     .catch((err: any) => {
       throw err
@@ -132,7 +141,7 @@ function copyOutputText() {
   <notifications position="bottom center" />
   <div class="card mx-5">
     <div class="card-header h1">
-      {{ CHATWORK_NAME }}コンバーター
+      {{ APP_NAME }}
     </div>
     <div class="card-body d-flex flex-column">
       <div>
