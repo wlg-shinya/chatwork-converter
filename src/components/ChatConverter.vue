@@ -15,10 +15,9 @@ function test() {
   const messageId = match[2]
 
   axios
-    .get("/api/chatwork_get_message", {
+    .get("/api/chatwork_get_messages", {
       params: {
         room_id: roomId,
-        message_id: messageId
       },
     })
     .then((response) => {

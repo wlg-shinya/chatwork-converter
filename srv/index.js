@@ -31,10 +31,30 @@ export default (app, http) => {
   app.use(cors())
   app.listen(process.env.PORT || 3000)
 
+  app.get('/api/chatwork_get_messages', (req, res) => {
+    console.log(`[${date()}] /api/chatwork_get_message`)
+    const room_id = queryValue(req, "room_id")
+    // https://developer.chatwork.com/reference/get-rooms-room_id-messages
+    axios
+      .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages?force=1`, { 
+        headers: {
+          "x-chatworktoken": process.env.VUE_APP_CHATWORK_API_TOKEN
+        } 
+      })
+      .then((response) => {
+        const data = JSON.parse(JSON.stringify(response.data))
+        res.json(data)
+      })
+      .catch((err) => {
+        throw err;
+      })
+  })
+
   app.get('/api/chatwork_get_message', (req, res) => {
     console.log(`[${date()}] /api/chatwork_get_message`)
     const room_id = queryValue(req, "room_id")
     const message_id = queryValue(req, "message_id")
+    // https://developer.chatwork.com/reference/get-rooms-room_id-messages-message_id
     axios
       .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`, { 
         headers: {
