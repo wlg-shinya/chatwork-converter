@@ -3,7 +3,7 @@ import { ref } from "vue"
 import axios from "axios"
 
 const FORMAT = new Map()
-FORMAT.set("confluence", "ConfluenceWiki")
+FORMAT.set("confluence", "Confluence Wiki")
 
 const messageURL = ref("")
 const targetMessageCount = ref(5)
@@ -28,7 +28,7 @@ function formatBold(text: string) {
   }
 }
 
-function test() {
+function createOutputText() {
   const url = messageURL.value
   if (!url) return
 
@@ -83,16 +83,25 @@ ${message}
       throw err
     })
 }
+
+function copyOutputText() {
+  console.log("copyOutputText")
+}
 </script>
 
 <template>
   <div>
+    <label>変換したいメッセージのリンク</label>
     <input v-model="messageURL" />
+    <label>何件先まで変換するか</label>
     <input v-model="targetMessageCount" type="number" />
+    <label>変換フォーマット</label>
     <select v-model="formatKey">
       <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
     </select>
-    <button @click="test()">test</button>
+    <button @click="createOutputText()">create</button>
+    <label>出力結果</label>
     <pre style="text-align: left">{{ outputText }}</pre>
+    <button v-if="outputText" @click="copyOutputText()">copy</button>
   </div>
 </template>
