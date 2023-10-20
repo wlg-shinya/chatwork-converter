@@ -10,7 +10,7 @@ const CHATWORK_NAME = "Chatwork"
 
 const messageURL = ref("")
 const targetMessageCount = ref(5)
-const outputText = ref("b")
+const outputText = ref("")
 const formatKey = ref("confluence")
 
 const howToPaste = computed(() => {
