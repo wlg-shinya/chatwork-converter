@@ -6,7 +6,7 @@ import { notify } from "@kyvg/vue3-notification"
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 
-const ADMIN_EMAIL="s-watanabe@three-rings.net"
+const ADMIN_EMAIL = "s-watanabe@three-rings.net"
 const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
@@ -139,8 +139,8 @@ function copyOutputText() {
         <label class="font-weight-bold">使い方</label>
         <ol>
           <li>{{ CHATWORK_NAME }}で残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
-          <li>出力結果をコピーします。末尾にある
-            <fa icon="copy" /> を押してもコピーされます。手動でも大丈夫です
+          <li>出力結果をコピーします。
+            <fa icon="copy" /> を押してもコピーされます。手動コピーでも大丈夫です
           </li>
           <li>{{ howToPaste }}</li>
         </ol>
@@ -179,7 +179,7 @@ function copyOutputText() {
         <li>フォーマットを増やしてほしい！</li>
         <li>〇〇な機能に対応してほしい！</li>
       </ul>
-      ご要望は {{ CHATWORK_NAME }} の {{ADMIN_EMAIL}} までご連絡ください  
+      ご要望は {{ CHATWORK_NAME }} の {{ ADMIN_EMAIL }} までご連絡ください
     </div>
   </div>
 </template>
