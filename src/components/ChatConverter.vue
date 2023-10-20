@@ -92,12 +92,24 @@ ${message}
       throw err
     })
 }
+
+function copyOutputText() {
+  console.log("copyOutputText")
+}
 </script>
 
 <template>
   <div>
+    <div>
+      <label class="font-weight-bold">使い方</label>
+      <ol>
+        <li>chatworkで残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
+        <li>出力結果をコピーします。末尾にあるコピーボタンを押してもコピーされます。手動でも大丈夫です</li>
+        <li>{{ howToPaste }}</li>
+      </ol>
+    </div>
     <div class="form-group">
-      <label class="font-weight-bold">変換したいメッセージのリンク</label>
+      <label class="font-weight-bold">先頭メッセージリンク</label>
       <input v-model="messageURL" class="form-control" />
     </div>
     <div class="form-group">
@@ -113,16 +125,10 @@ ${message}
     <button @click="createOutputText()" class="btn btn-primary btn-lg">変換</button>
     <br><br>
     <div class="form-group">
-      <label class="font-weight-bold">使い方</label>
-      <ol>
-        <li>出力結果に表示されたものをコピーしてください。クリックすると全選択できます</li>
-        <li>{{ howToPaste }}</li>
-      </ol>
-    </div>
-    <div class="form-group">
       <label class="font-weight-bold">出力結果</label>
       <div v-if="outputText">
-        <pre class="alert alert-primary" style="text-align:left;user-select:all;">{{ outputText }}</pre>
+        <pre class="alert alert-primary" style="text-align:left;">{{ outputText }}</pre>
+        <button @click="copyOutputText()" class="btn btn-primary btn-lg">コピー</button>
       </div>
     </div>
   </div>
