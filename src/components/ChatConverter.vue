@@ -2,9 +2,31 @@
 import { ref } from "vue"
 import axios from "axios"
 
+const FORMAT = new Map()
+FORMAT.set("confluence", "ConfluenceWiki")
+
 const messageURL = ref("")
 const targetMessageCount = ref(5)
 const outputText = ref("")
+const formatKey = ref("confluence")
+
+function formatLink(link: string, text = "") {
+  switch (formatKey.value) {
+    case "confluence":
+      return text ? `[${text}|${link}]` : `[${link}]`
+    default:
+      return link
+  }
+}
+
+function formatBold(text: string) {
+  switch (formatKey.value) {
+    case "confluence":
+      return `*${text}*`
+    default:
+      return text
+  }
+}
 
 function test() {
   const url = messageURL.value
@@ -50,13 +72,12 @@ function test() {
         const originalUrl = url.replace(/[0-9]+$/, x.message_id)
 
         outputText.value += `
-*${name}* ${time}
+${formatBold(name)} ${time} ${formatLink(originalUrl, '投稿元')}
 ${message}
-[投稿元メッセージ|${originalUrl}]\n
 ----
 `
       })
-      outputText.value += `この文章は [${document.title}|${process.env.VUE_APP_BASE_URL}] によって生成されました`
+      outputText.value += `この文章は ${formatLink(process.env.VUE_APP_BASE_URL, document.title)} によって生成されました`
     })
     .catch((err: any) => {
       throw err
@@ -68,6 +89,9 @@ ${message}
   <div>
     <input v-model="messageURL" />
     <input v-model="targetMessageCount" type="number" />
+    <select v-model="formatKey">
+      <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
+    </select>
     <button @click="test()">test</button>
     <pre style="text-align: left">{{ outputText }}</pre>
   </div>
