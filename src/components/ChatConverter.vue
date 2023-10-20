@@ -10,7 +10,6 @@ const targetMessageCount = ref(5)
 const outputText = ref("")
 const formatKey = ref("confluence")
 
-
 const howToPaste = computed(() => {
   switch (formatKey.value) {
     case "confluence":
@@ -106,12 +105,12 @@ ${message}
       <input v-model="targetMessageCount" type="number" class="form-control" />
     </div>
     <div class="form-group">
-      <label class="font-weight-bold">変換フォーマット</label>
+      <label class="font-weight-bold">フォーマット</label>
       <select v-model="formatKey" class="custom-select">
         <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
       </select>
     </div>
-    <button @click="createOutputText()" class="btn btn-primary">create</button>
+    <button @click="createOutputText()" class="btn btn-primary">変換</button>
     <br><br>
     <div class="form-group">
       <label class="font-weight-bold">使い方</label>
