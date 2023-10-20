@@ -6,9 +6,9 @@ import { notify } from "@kyvg/vue3-notification"
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 
+const APP_TITLE = process.env.VUE_APP_TITLE
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
 const CHATWORK_NAME = "Chatwork"
-const APP_NAME = `${CHATWORK_NAME}コンバーター`
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
 
@@ -129,7 +129,7 @@ ${formatBold(name)} ${time} ${formatLink(originalUrl, '投稿元')}
 ${message}
 ${formatSeparator()}`
       })
-      outputText.value += `\nこの文章は ${formatLink(process.env.VUE_APP_BASE_URL, APP_NAME)} によって生成されました`
+      outputText.value += `\nこの文章は ${formatLink(process.env.VUE_APP_BASE_URL, APP_TITLE)} によって生成されました`
     })
     .catch((err: any) => {
       throw err
@@ -160,7 +160,7 @@ function copyOutputText() {
   <notifications position="bottom center" />
   <div class="card mx-5">
     <div class="card-header h1">
-      {{ APP_NAME }}
+      {{ APP_TITLE }}
     </div>
     <div class="card-body d-flex flex-column">
       <div>
