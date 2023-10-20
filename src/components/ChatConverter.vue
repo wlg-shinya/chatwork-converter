@@ -147,7 +147,7 @@ function copyOutputText() {
         <div v-if="outputText">
           <div class="alert alert-primary">
             <pre style="text-align:left;user-select:all;">{{ outputText }}</pre>
-            <button @click="copyOutputText()" class="btn">C</button>
+            <button @click="copyOutputText()" class="btn btn-outline-primary"><fa icon="copy" /></button>
           </div>
         </div>
       </div>
