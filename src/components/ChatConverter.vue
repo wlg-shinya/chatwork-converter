@@ -79,7 +79,7 @@ function createOutputText() {
         room_id: roomId,
       },
     })
-    .then((response) => {
+    .then(async (response) => {
       const data = JSON.parse(JSON.stringify(response.data))
       // 削除済みメッセージを除外
       const messages = data.filter((x: any) => x.body != "[deleted]")
@@ -93,9 +93,22 @@ function createOutputText() {
           return false
         }
       })
-      // 指定メッセージから指定数分のメッセージを収集
-      const endIndex = startIndex + count < messages.length ? startIndex + count : messages.length
-      const targetMessages = messages.slice(startIndex, endIndex)
+      let targetMessages = []
+      if (startIndex != -1) {
+        // 特定できたので指定メッセージから指定数分のメッセージも収集
+        const endIndex = startIndex + count < messages.length ? startIndex + count : messages.length
+        targetMessages = messages.slice(startIndex, endIndex)
+      } else {
+        // 特定できなかったので指定メッセージだけ改めて取得
+        const response2 = await axios.get("/api/chatwork_get_message", {
+          params: {
+            room_id: roomId,
+            message_id: messageId,
+          },
+        })
+        const data = JSON.parse(JSON.stringify(response2.data))
+        targetMessages.push(data)
+      }
       // メッセージを出力用に整形
       outputText.value = `${formatSeparator()}`
       targetMessages.forEach((x: any) => {
