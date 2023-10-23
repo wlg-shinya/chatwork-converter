@@ -112,7 +112,8 @@ function createOutputText() {
         outputText.value += `
 ${formatter.value.bold(name)} ${time} ${formatter.value.link(originalUrl, '投稿元')}
 ${formatter.value.body(body)}
-${formatter.value.separator()}`
+${formatter.value.separator()}
+`
       })
       outputText.value += `\nこの文章は ${formatter.value.link(process.env.VUE_APP_BASE_URL, APP_TITLE)} によって生成されました`
     })

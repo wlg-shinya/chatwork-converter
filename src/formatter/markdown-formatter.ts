@@ -11,7 +11,7 @@ export default class MarkdownFormatter implements Formatter {
         return ` **${text}** `
     }
     separator() {
-        return "___\n"
+        return "___"
     }
     body(text: string) {
         let newbody = text
