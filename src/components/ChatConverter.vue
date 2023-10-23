@@ -212,4 +212,3 @@ function copyOutputText() {
     </div>
   </div>
 </template>
-@/formatter/confluence-formatter
