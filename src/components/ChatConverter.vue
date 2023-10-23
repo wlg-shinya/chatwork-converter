@@ -95,14 +95,14 @@ function createOutputText() {
       outputText.value = `${formatter.value.separator()}`
       targetMessages.forEach((x: any) => {
         const name = x.account.name
-        const message = x.body
+        const body = x.body
         const time = new Date(x.send_time * 1000) // send_time は秒なのでミリ秒に変換
           .toLocaleString("ja-JP") // 日付時刻情報を日本向けに変換
         const originalUrl = url.replace(/[0-9]+$/, x.message_id)
 
         outputText.value += `
 ${formatter.value.bold(name)} ${time} ${formatter.value.link(originalUrl, '投稿元')}
-${message}
+${formatter.value.body(body)}
 ${formatter.value.separator()}`
       })
       outputText.value += `\nこの文章は ${formatter.value.link(process.env.VUE_APP_BASE_URL, APP_TITLE)} によって生成されました`

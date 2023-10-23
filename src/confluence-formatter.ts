@@ -13,4 +13,7 @@ export default class ConfluenceFormatter implements Formatter {
     separator() {
         return "----"
     }
+    body(text: string) {
+        return text
+    }
 }
