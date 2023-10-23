@@ -4,12 +4,15 @@ import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
 import ConfluenceFormatter from "@/confluence-formatter"
 
+// できれば外部で設定したいもの
+const ADMIN_EMAIL = "s-watanabe@three-rings.net"
+
+// フォーマット種類
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 const CONFLUENCE_FORMATTER = new ConfluenceFormatter()
 
 const APP_TITLE = process.env.VUE_APP_TITLE
-const ADMIN_EMAIL = "s-watanabe@three-rings.net"
 const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
