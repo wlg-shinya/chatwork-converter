@@ -1,4 +1,4 @@
-import Formatter from "@/formatter"
+import Formatter from "@/formatter/formatter"
 
 export default class ConfluenceFormatter implements Formatter {
     howToPaste() {

@@ -2,7 +2,7 @@
 import { ref, watchEffect } from "vue"
 import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
-import ConfluenceFormatter from "@/confluence-formatter"
+import ConfluenceFormatter from "@/formatter/confluence-formatter"
 
 // できれば外部で設定したいもの
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
@@ -190,3 +190,4 @@ function copyOutputText() {
     </div>
   </div>
 </template>
+@/formatter/confluence-formatter
