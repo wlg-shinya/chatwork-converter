@@ -15,7 +15,7 @@ const CONFLUENCE_FORMATTER = new ConfluenceFormatter()
 FORMAT.set("markdown", "Markdown")
 const MARKDOWN_FORMATTER = new MarkdownFormatter()
 
-const APP_TITLE = process.env.VUE_APP_TITLE
+const APP_TITLE = `${process.env.VUE_APP_TITLE} version ${process.env.VUE_APP_VERSION}`
 const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
