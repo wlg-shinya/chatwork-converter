@@ -15,6 +15,8 @@ export default class MarkdownFormatter implements Formatter {
     }
     body(text: string) {
         let newbody = text
+        // [toall] -> 【ToALL】
+        newbody = newbody.replace(/\[toall\](.*)/g, "【ToALL】$1")
         // [To:*] -> 【To】
         newbody = newbody.replace(/\[To:.*\](.*)/g, "【To】$1")
         // [rp *] -> 【Re】
