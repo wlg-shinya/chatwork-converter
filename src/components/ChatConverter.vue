@@ -6,8 +6,7 @@ import ConfluenceFormatter from "@/confluence-formatter"
 
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
-
-const confluenceFormatter = new ConfluenceFormatter()
+const CONFLUENCE_FORMATTER = new ConfluenceFormatter()
 
 const APP_TITLE = process.env.VUE_APP_TITLE
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
@@ -15,17 +14,17 @@ const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
 
-const formatter = ref(confluenceFormatter)
 const messageURL = ref("")
 const targetMessageCount = ref(5)
 const outputText = ref("")
 const formatKey = ref("confluence")
+const formatter = ref(CONFLUENCE_FORMATTER)
 
 watchEffect(() => {
   switch (formatKey.value) {
     case "confluence":
     default:
-      formatter.value = confluenceFormatter
+      formatter.value = CONFLUENCE_FORMATTER
       break
   }
 })
