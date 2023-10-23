@@ -2,6 +2,7 @@
 import { ref, watchEffect } from "vue"
 import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
+import LocalStorage from "@/local-storage"
 import ConfluenceFormatter from "@/formatter/confluence-formatter"
 import MarkdownFormatter from "@/formatter/markdown-formatter"
 
@@ -19,6 +20,7 @@ const APP_TITLE = `${process.env.VUE_APP_TITLE} version ${process.env.VUE_APP_VE
 const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
+const LOCAL_STORAGE_TOP_NAME = "main"
 
 const messageURL = ref("")
 const targetMessageCount = ref(5)
@@ -26,6 +28,22 @@ const outputText = ref("")
 const formatKey = ref("confluence")
 const formatter = ref(CONFLUENCE_FORMATTER)
 
+// ローカルストレージから初期設定を読み込む
+const localData = LocalStorage.fetch(LOCAL_STORAGE_TOP_NAME)
+if (typeof localData["targetMessageCount"] !== "undefined") {
+  targetMessageCount.value = localData.targetMessageCount
+}
+if (typeof localData.formatKey !== "undefined") {
+  formatKey.value = localData.formatKey
+}
+watchEffect(() => {
+  // 設定が変更され次第ローカルストレージへ保存
+  localData["targetMessageCount"] = targetMessageCount.value
+  localData["formatKey"] = formatKey.value
+  LocalStorage.save(localData, LOCAL_STORAGE_TOP_NAME)
+})
+
+// フォーマット切り替え
 watchEffect(() => {
   switch (formatKey.value) {
     case "markdown":
