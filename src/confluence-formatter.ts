@@ -14,10 +14,13 @@ export default class ConfluenceFormatter implements Formatter {
         return "----"
     }
     body(text: string) {
+        let newbody = text
         // [qt][qtmeta *][/qt] -> bq.
+        newbody = newbody.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/g, "bq. $1")
         // [To:*] -> [To]
+        newbody = newbody.replace(/\[To:.*\](.*)/g, "[To]$1")
         // [rp *] -> [Re]
-        text
-        return text
+        newbody = newbody.replace(/\[rp.*\](.*)/g, "[Re]$1")
+        return newbody
     }
 }
