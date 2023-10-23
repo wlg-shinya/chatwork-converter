@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { ref, watchEffect } from "vue"
 import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
-import Formatter from "@/formatter"
 import ConfluenceFormatter from "@/confluence-formatter"
 
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 
 const confluenceFormatter = new ConfluenceFormatter()
-let formatter : Formatter = confluenceFormatter
 
 const APP_TITLE = process.env.VUE_APP_TITLE
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
@@ -17,46 +15,20 @@ const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
 
+const formatter = ref(confluenceFormatter)
 const messageURL = ref("")
 const targetMessageCount = ref(5)
 const outputText = ref("")
 const formatKey = ref("confluence")
 
-const howToPaste = computed(() => {
+watchEffect(() => {
   switch (formatKey.value) {
     case "confluence":
-      return "Confluence編集画面にて挿入したい場所で＋ボタン押下後マークアップを選択。表示された画面で\"ConfluenceWiki\"を選択してペーストしてください"
     default:
-      return ""
+      formatter.value = confluenceFormatter
+      break
   }
 })
-
-function formatLink(link: string, text = "") {
-  switch (formatKey.value) {
-    case "confluence":
-      return formatter.link(link, text)
-    default:
-      return link
-  }
-}
-
-function formatBold(text: string) {
-  switch (formatKey.value) {
-    case "confluence":
-    return formatter.bold(text)
-    default:
-      return text
-  }
-}
-
-function formatSeparator() {
-  switch (formatKey.value) {
-    case "confluence":
-      return formatter.separator()
-    default:
-      return ""
-  }
-}
 
 function validate() {
   // URLが入力されていなければ無効
@@ -121,7 +93,7 @@ function createOutputText() {
           })
       }
       // メッセージを出力用に整形
-      outputText.value = `${formatSeparator()}`
+      outputText.value = `${formatter.value.separator()}`
       targetMessages.forEach((x: any) => {
         const name = x.account.name
         const message = x.body
@@ -130,11 +102,11 @@ function createOutputText() {
         const originalUrl = url.replace(/[0-9]+$/, x.message_id)
 
         outputText.value += `
-${formatBold(name)} ${time} ${formatLink(originalUrl, '投稿元')}
+${formatter.value.bold(name)} ${time} ${formatter.value.link(originalUrl, '投稿元')}
 ${message}
-${formatSeparator()}`
+${formatter.value.separator()}`
       })
-      outputText.value += `\nこの文章は ${formatLink(process.env.VUE_APP_BASE_URL, APP_TITLE)} によって生成されました`
+      outputText.value += `\nこの文章は ${formatter.value.link(process.env.VUE_APP_BASE_URL, APP_TITLE)} によって生成されました`
     })
     .catch((err: any) => {
       throw err
@@ -175,7 +147,7 @@ function copyOutputText() {
           <li>出力結果をコピーします。
             <fa icon="copy" /> を押してもコピーされます。手動コピーでも大丈夫です
           </li>
-          <li>{{ howToPaste }}</li>
+          <li>{{ formatter.howToPaste() }}</li>
         </ol>
       </div>
       <div class="form-group">
