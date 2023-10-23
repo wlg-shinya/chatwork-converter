@@ -198,7 +198,7 @@ function copyOutputText() {
             <button @click="copyOutputText()" class="btn btn-outline-success">
               <fa icon="copy" />
             </button>
-            <pre style="text-align:left;">{{ outputText }}</pre>
+            <pre>{{ outputText }}</pre>
           </div>
         </div>
       </div>
