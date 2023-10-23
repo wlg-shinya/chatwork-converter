@@ -30,7 +30,7 @@ const formatter = ref(CONFLUENCE_FORMATTER)
 
 // ローカルストレージから初期設定を読み込む
 const localData = LocalStorage.fetch(LOCAL_STORAGE_TOP_NAME)
-if (typeof localData["targetMessageCount"] !== "undefined") {
+if (typeof localData.targetMessageCount !== "undefined") {
   targetMessageCount.value = localData.targetMessageCount
 }
 if (typeof localData.formatKey !== "undefined") {
@@ -38,8 +38,8 @@ if (typeof localData.formatKey !== "undefined") {
 }
 watchEffect(() => {
   // 設定が変更され次第ローカルストレージへ保存
-  localData["targetMessageCount"] = targetMessageCount.value
-  localData["formatKey"] = formatKey.value
+  localData.targetMessageCount = targetMessageCount.value
+  localData.formatKey = formatKey.value
   LocalStorage.save(localData, LOCAL_STORAGE_TOP_NAME)
 })
 
