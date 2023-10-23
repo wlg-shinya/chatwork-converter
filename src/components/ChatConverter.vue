@@ -3,6 +3,7 @@ import { ref, watchEffect } from "vue"
 import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
 import ConfluenceFormatter from "@/formatter/confluence-formatter"
+import MarkdownFormatter from "@/formatter/markdown-formatter"
 
 // できれば外部で設定したいもの
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
@@ -11,6 +12,8 @@ const ADMIN_EMAIL = "s-watanabe@three-rings.net"
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
 const CONFLUENCE_FORMATTER = new ConfluenceFormatter()
+FORMAT.set("markdown", "Markdown")
+const MARKDOWN_FORMATTER = new MarkdownFormatter()
 
 const APP_TITLE = process.env.VUE_APP_TITLE
 const CHATWORK_NAME = "Chatwork"
@@ -25,6 +28,9 @@ const formatter = ref(CONFLUENCE_FORMATTER)
 
 watchEffect(() => {
   switch (formatKey.value) {
+    case "markdown":
+      formatter.value = MARKDOWN_FORMATTER
+      break
     case "confluence":
     default:
       formatter.value = CONFLUENCE_FORMATTER
