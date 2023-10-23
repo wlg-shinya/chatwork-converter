@@ -78,7 +78,7 @@ function createOutputText() {
         const endIndex = startIndex + count < messages.length ? startIndex + count : messages.length
         targetMessages = messages.slice(startIndex, endIndex)
       } else {
-        // 特定できなかったので指定メッセージだけ改めて取得
+        // 直近メッセージ群からは特定できなかったので指定メッセージだけ改めて取得
         await axios
           .get("/api/chatwork_get_message", {
             params: {
