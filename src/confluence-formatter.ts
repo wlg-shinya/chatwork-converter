@@ -14,6 +14,10 @@ export default class ConfluenceFormatter implements Formatter {
         return "----"
     }
     body(text: string) {
+        // [qt][qtmeta *][/qt] -> bq.
+        // [To:*] -> [To]
+        // [rp *] -> [Re]
+        text
         return text
     }
 }
