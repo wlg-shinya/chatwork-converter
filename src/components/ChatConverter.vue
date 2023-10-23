@@ -183,7 +183,7 @@ function copyOutputText() {
         <li>フォーマットを増やしてほしい！</li>
         <li>〇〇な機能に対応してほしい！</li>
       </ul>
-      ご要望は {{ CHATWORK_NAME }} の {{ ADMIN_EMAIL }} までご連絡ください
+      ご要望は {{ CHATWORK_NAME }} 上で {{ ADMIN_EMAIL }} にコンタクトください
     </div>
   </div>
 </template>
