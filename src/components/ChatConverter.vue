@@ -2,9 +2,14 @@
 import { ref, computed } from "vue"
 import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
+import Formatter from "@/formatter"
+import ConfluenceFormatter from "@/confluence-formatter"
 
 const FORMAT = new Map()
 FORMAT.set("confluence", "Confluence Wiki")
+
+const confluenceFormatter = new ConfluenceFormatter()
+let formatter : Formatter = confluenceFormatter
 
 const APP_TITLE = process.env.VUE_APP_TITLE
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
@@ -29,7 +34,7 @@ const howToPaste = computed(() => {
 function formatLink(link: string, text = "") {
   switch (formatKey.value) {
     case "confluence":
-      return text ? `[${text}|${link}]` : `[${link}]`
+      return formatter.link(link, text)
     default:
       return link
   }
@@ -38,7 +43,7 @@ function formatLink(link: string, text = "") {
 function formatBold(text: string) {
   switch (formatKey.value) {
     case "confluence":
-      return `*${text}*`
+    return formatter.bold(text)
     default:
       return text
   }
@@ -47,7 +52,7 @@ function formatBold(text: string) {
 function formatSeparator() {
   switch (formatKey.value) {
     case "confluence":
-      return "----"
+      return formatter.separator()
     default:
       return ""
   }
