@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from "vue"
+import { ref, watchEffect, computed } from "vue"
 import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
 import LocalStorage from "@/local-storage"
@@ -26,7 +26,6 @@ const messageURL = ref("")
 const targetMessageCount = ref(5)
 const outputText = ref("")
 const formatKey = ref("confluence")
-const formatter = ref(CONFLUENCE_FORMATTER)
 
 // ローカルストレージから初期設定を読み込む
 const localData = LocalStorage.fetch(LOCAL_STORAGE_TOP_NAME)
@@ -43,16 +42,14 @@ watchEffect(() => {
   LocalStorage.save(localData, LOCAL_STORAGE_TOP_NAME)
 })
 
-// フォーマット切り替え
-watchEffect(() => {
+// フォーマッタ取得
+const formatter = computed(() => {
   switch (formatKey.value) {
     case "markdown":
-      formatter.value = MARKDOWN_FORMATTER
-      break
+      return MARKDOWN_FORMATTER
     case "confluence":
     default:
-      formatter.value = CONFLUENCE_FORMATTER
-      break
+      return CONFLUENCE_FORMATTER
   }
 })
 
