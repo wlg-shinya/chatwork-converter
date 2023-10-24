@@ -6,6 +6,10 @@ import LocalStorage from "@/local-storage"
 import ConfluenceFormatter from "@/formatter/confluence-formatter"
 import MarkdownFormatter from "@/formatter/markdown-formatter"
 
+// クエリパラメータを得るためのvue-router
+import { useRoute } from "vue-router"
+const route = useRoute()
+
 // できれば外部で設定したいもの
 const ADMIN_EMAIL = "s-watanabe@three-rings.net"
 
@@ -22,7 +26,7 @@ const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
 const LOCAL_STORAGE_TOP_NAME = "main"
 
-const messageURL = ref("")
+const messageURL = ref(route.query.message_link || "")
 const targetMessageCount = ref(5)
 const outputText = ref("")
 const formatKey = ref("confluence")
@@ -35,8 +39,8 @@ if (typeof localData.targetMessageCount !== "undefined") {
 if (typeof localData.formatKey !== "undefined") {
   formatKey.value = localData.formatKey
 }
+// 設定が変更され次第ローカルストレージへ保存
 watchEffect(() => {
-  // 設定が変更され次第ローカルストレージへ保存
   localData.targetMessageCount = targetMessageCount.value
   localData.formatKey = formatKey.value
   LocalStorage.save(localData, LOCAL_STORAGE_TOP_NAME)

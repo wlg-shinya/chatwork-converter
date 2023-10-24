@@ -4,8 +4,7 @@ import HomeView from '../views/HomeView.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    component: HomeView,
   },
   // {
   //   path: '/about',
@@ -18,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.VUE_APP_BASE_URL),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
