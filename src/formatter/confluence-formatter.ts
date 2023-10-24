@@ -16,7 +16,7 @@ export default class ConfluenceFormatter implements Formatter {
     body(text: string) {
         let newbody = text
         // [qt][qtmeta *][/qt] -> bq.
-        newbody = newbody.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/g, "bq. $1")
+        newbody = newbody.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/gs, "bq. $1\n")
         // [toall] -> 【ToALL】
         newbody = newbody.replace(/\[toall\](.*)/g, "【ToALL】$1")
         // [To:*] -> 【To】
