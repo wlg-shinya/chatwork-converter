@@ -26,7 +26,7 @@ const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
 const LOCAL_STORAGE_TOP_NAME = "main"
 
-const messageURL = ref(route.query.message_link || "")
+const messageLink = ref(route.query.message_link?.toString().trimEnd() || "")
 const targetMessageCount = ref(5)
 const outputText = ref("")
 const formatKey = ref("confluence")
@@ -59,9 +59,9 @@ const formatter = computed(() => {
 
 function validate() {
   // URLが入力されていなければ無効
-  if (!messageURL.value) return false
+  if (!messageLink.value) return false
   // 不正なURLなら無効
-  if (!messageURL.value.match(MESSAGE_URL_REQEXP)) return false
+  if (!messageLink.value.match(MESSAGE_URL_REQEXP)) return false
   // 取得件数が範囲外なら無効
   if (targetMessageCount.value < TARGET_MESSAGE_COUNT.MIN || targetMessageCount.value > TARGET_MESSAGE_COUNT.MAX) {
     return false
@@ -71,8 +71,8 @@ function validate() {
 }
 
 function createOutputText() {
-  const url = messageURL.value
-  const match = url.match(MESSAGE_URL_REQEXP) ?? [] // ts警告回避。nullではないことはvalidate()で保証する
+  const link = messageLink.value
+  const match = link.match(MESSAGE_URL_REQEXP) ?? [] // ts警告回避。nullではないことはvalidate()で保証する
   const roomId = match[1]
   const messageId = match[2]
   const count = targetMessageCount.value
@@ -126,7 +126,7 @@ function createOutputText() {
         const body = x.body
         const time = new Date(x.send_time * 1000) // send_time は秒なのでミリ秒に変換
           .toLocaleString("ja-JP") // 日付時刻情報を日本向けに変換
-        const originalUrl = url.replace(/[0-9]+$/, x.message_id)
+        const originalUrl = link.replace(/[0-9]+$/, x.message_id)
 
         outputText.value += `
 ${formatter.value.bold(name)} ${time} ${formatter.value.link(originalUrl, '投稿元')}
@@ -180,7 +180,7 @@ function copyOutputText() {
       </div>
       <div class="form-group">
         <label class="font-weight-bold">先頭メッセージリンク</label>
-        <input v-model="messageURL" class="form-control" />
+        <input v-model="messageLink" class="form-control" />
       </div>
       <div class="form-group">
         <label class="font-weight-bold">何件先まで変換するか</label>
