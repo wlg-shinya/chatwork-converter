@@ -23,6 +23,10 @@ export default class ConfluenceFormatter implements Formatter {
         newbody = newbody.replace(/\[To:.*\](.*)/g, "【To】$1")
         // [rp *] -> 【Re】
         newbody = newbody.replace(/\[rp.*\](.*)/g, "【Re】$1")
+        // [info][title] -> title部をヘッダにしてテーブル化
+        newbody = newbody.replace(/\[info\]\[title\](.*)\[\/title\](.*)\[\/info\]/g, "\n||$1||\n|$2|\n")
+        // [info] -> テーブル化
+        newbody = newbody.replace(/\[info\](.*)\[\/info\]/g, "\n|$1|\n")
         return newbody
     }
 }
