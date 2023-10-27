@@ -14,5 +14,3 @@ npm run serve && npm run express
 ```
 npm run build && npm run express:run
 ```
-
-test
