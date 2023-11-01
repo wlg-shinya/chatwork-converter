@@ -1,0 +1,12 @@
+services:
+  frontend:
+    build: .
+    tty: true
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "127.0.0.1:8080:8080"
+    command: >
+      sh -c 'npm install --force && npm run serve'
