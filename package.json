@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "express": "vue-cli-service express:watch --port 3001",
-    "express:run": "vue-cli-service express:run --port 3001"
+    "express": "vue-cli-service express:watch --port 3000",
+    "express:run": "vue-cli-service express:run --port 3000"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",

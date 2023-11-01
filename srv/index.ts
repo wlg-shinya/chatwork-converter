@@ -29,7 +29,9 @@ function date() {
 export default (app: any, http: any) => {
   app.use(bodyParser.json())
   app.use(cors())
-  app.listen(process.env.PORT || 3000)
+  app.listen(process.env.PORT || 3001, () => {
+    // 起動完了後の処理は特になし
+  })
 
   app.get('/api/chatwork_get_messages', (req, res) => {
     console.log(`[${date()}] /api/chatwork_get_message`)
