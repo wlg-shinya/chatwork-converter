@@ -1,7 +1,6 @@
-import express from 'express';
 import axios from "axios"
-import bodyParser from 'body-parser'
-import cors from 'cors'
+import bodyParser from "body-parser"
+import cors from "cors"
 
 // URLクエリパラメータから値を得る
 function queryValue(req: any, name: string, defaultValue?: any, outputLog = true) {
@@ -29,6 +28,8 @@ function date() {
 export default (app: any, http: any) => {
   app.use(bodyParser.json())
   app.use(cors())
+  // dockerコンテナに入れる際に内部で動くnodemonのポートとかぶると EADDRINUSED が発生する
+  // 最終的に外部から接続されるのはnodemon側のようなので、こちらのポートをずらしておく
   app.listen(process.env.PORT || 3001, () => {
     // 起動完了後の処理は特になし
   })
