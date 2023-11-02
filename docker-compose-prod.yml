@@ -8,12 +8,16 @@ services:
       target: prod
     ports:
       - "127.0.0.1:8080:8080"
-    command: serve -s dist
+    command: serve -s ./dist -p 8080
     depends_on:
       - backend
   backend:
     container_name: backend-prod
     image: chatconv-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
     ports:
       - "127.0.0.1:3000:3000"
-    command: npm run express:run
+    command: node ./dist/js/srv/index.js

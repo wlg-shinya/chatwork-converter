@@ -24,4 +24,4 @@ services:
       - "127.0.0.1:3000:3000"
     volumes:
       - .:/usr/src/app
-    command: sh -c 'npm run express:tsc && npm run express:run'
+    command: sh -c 'npm run express:build && npm run express:run'
