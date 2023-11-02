@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/usr/src/app
     command: npm run serve
-    depends_on: 
+    depends_on:
       - backend
   backend:
     image: chatconv-frontend
