@@ -1,6 +1,8 @@
 services:
   frontend:
     build: .
+    environment:
+      - NODE_ENV=development
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
@@ -10,6 +12,8 @@ services:
       - backend
   backend:
     image: chatconv-frontend
+    environment:
+      - NODE_ENV=development
     ports:
       - "127.0.0.1:3000:3000"
     volumes:
