@@ -1,0 +1,20 @@
+services:
+  frontend:
+    build: .
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "127.0.0.1:8080:8080"
+    command: >
+      sh -c 'npm run build &&
+      serve -s dist
+      '
+    depends_on:
+      - backend
+  backend:
+    image: chatconv-frontend
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "127.0.0.1:3000:3000"
+    command: npm run express:run
