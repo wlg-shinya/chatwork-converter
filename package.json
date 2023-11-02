@@ -6,19 +6,21 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "express": "vue-cli-service express:watch --port 3000",
-    "express:run": "vue-cli-service express:run --port 3000"
+    "express:tsc": "sh -c './node_modules/.bin/tsc --outDir ./dist/js/srv ./srv/index.ts'",
+    "express:run": "node ./dist/js/srv/index.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@kyvg/vue3-notification": "^3.0.2",
+    "@types/cors": "^2.8.15",
     "axios": "^0.27.2",
-    "body-parser": "^1.20.2",
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "vue": "^3.2.13",
     "vue-axios": "^3.5.2",
     "vue-router": "^4.0.3"
@@ -34,7 +36,6 @@
     "@vue/eslint-config-typescript": "^9.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "typescript": "~4.5.5",
-    "vue-cli-plugin-express": "~1.0.2"
+    "typescript": "~4.5.5"
   }
 }

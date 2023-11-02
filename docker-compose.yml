@@ -16,8 +16,12 @@ services:
   backend:
     container_name: backend-dev
     image: chatconv-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - "127.0.0.1:3000:3000"
     volumes:
       - .:/usr/src/app
-    command: npm run express
+    command: sh -c 'npm run express:tsc && npm run express:run'

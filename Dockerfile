@@ -1,8 +1,6 @@
 FROM node:20.9.0 as dev
 WORKDIR /usr/src/app
-COPY . /usr/src/app
 ENV NODE_ENV=development
-RUN npm install --force
 
 FROM node:20.9.0 as prod
 WORKDIR /usr/src/app

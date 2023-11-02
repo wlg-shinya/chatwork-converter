@@ -1,6 +1,7 @@
+import * as express from "express"
 import axios from "axios"
-import bodyParser from "body-parser"
-import cors from "cors"
+import * as cors from "cors"
+import 'dotenv/config'
 
 // URLクエリパラメータから値を得る
 function queryValue(req: any, name: string, defaultValue?: any, outputLog = true) {
@@ -25,47 +26,46 @@ function date() {
   return (new Date()).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
 }
 
-export default (app: any, http: any) => {
-  app.use(bodyParser.json())
-  app.use(cors())
-  // dockerコンテナに入れる際に内部で動くnodemonのポートとかぶると EADDRINUSED が発生する
-  // 最終的に外部から接続されるのはnodemon側のようなので、こちらのポートをずらしておく
-  app.listen(process.env.PORT || 3001, () => {
-    // 起動完了後の処理は特になし
-  })
+const app = express()
+app.use(express.json())
+app.use(cors())
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+  console.log(`[${date()}] Server running at: ${process.env.VUE_APP_BACKEND_URL}`)
+})
 
-  app.get('/api/chatwork_get_messages', (req, res) => {
-    console.log(`[${date()}] /api/chatwork_get_message`)
-    const room_id = queryValue(req, "room_id")
-    // https://developer.chatwork.com/reference/get-rooms-room_id-messages
-    const config = { headers: {} }
-    config.headers["x-chatworktoken"] = process.env.VUE_APP_CHATWORK_API_TOKEN
-    axios
-      .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages?force=1`, config)
-      .then((response) => {
-        const data = JSON.parse(JSON.stringify(response.data))
-        res.json(data)
-      })
-      .catch((err) => {
-        throw err;
-      })
-  })
+const token = process.env.VUE_APP_CHATWORK_API_TOKEN ?? ""
 
-  app.get('/api/chatwork_get_message', (req: any, res: any) => {
-    console.log(`[${date()}] /api/chatwork_get_message`)
-    const room_id = queryValue(req, "room_id")
-    const message_id = queryValue(req, "message_id")
-    // https://developer.chatwork.com/reference/get-rooms-room_id-messages-message_id
-    const config = { headers: {} }
-    config.headers["x-chatworktoken"] = process.env.VUE_APP_CHATWORK_API_TOKEN
-    axios
-      .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`, config)
-      .then((response) => {
-        const data = JSON.parse(JSON.stringify(response.data))
-        res.json(data)
-      })
-      .catch((err) => {
-        throw err;
-      })
-  })
-}
+app.get('/api/chatwork_get_messages', (req, res) => {
+  console.log(`[${date()}] /api/chatwork_get_message`)
+  const room_id = queryValue(req, "room_id")
+  // https://developer.chatwork.com/reference/get-rooms-room_id-messages
+  const config = { headers: { "x-chatworktoken": token }}
+  axios
+    .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages?force=1`, config)
+    .then((response) => {
+      const data = JSON.parse(JSON.stringify(response.data))
+      res.json(data)
+    })
+    .catch((err) => {
+      throw err
+    })
+})
+
+app.get('/api/chatwork_get_message', (req: any, res: any) => {
+  console.log(`[${date()}] /api/chatwork_get_message`)
+  const room_id = queryValue(req, "room_id")
+  const message_id = queryValue(req, "message_id")
+  // https://developer.chatwork.com/reference/get-rooms-room_id-messages-message_id
+  const config = { headers: { "x-chatworktoken": token }}
+  axios
+    .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`, config)
+    .then((response) => {
+      const data = JSON.parse(JSON.stringify(response.data))
+      res.json(data)
+    })
+    .catch((err) => {
+      throw err
+    })
+})
+

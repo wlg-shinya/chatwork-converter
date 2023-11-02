@@ -2,8 +2,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 // axios
-import axios from 'axios'
 import VueAxios from 'vue-axios'
+import axios from 'axios'
+axios.defaults.baseURL = process.env.VUE_APP_BACKEND_URL
 
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
