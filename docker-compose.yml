@@ -1,8 +1,11 @@
 services:
   frontend:
-    build: .
-    environment:
-      - NODE_ENV=development
+    container_name: frontend-dev
+    image: chatconv-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
@@ -11,9 +14,8 @@ services:
     depends_on:
       - backend
   backend:
-    image: chatconv-frontend
-    environment:
-      - NODE_ENV=development
+    container_name: backend-dev
+    image: chatconv-dev
     ports:
       - "127.0.0.1:3000:3000"
     volumes:
