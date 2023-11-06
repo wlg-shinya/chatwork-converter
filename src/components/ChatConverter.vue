@@ -115,7 +115,7 @@ function createOutputText() {
             const data = JSON.parse(JSON.stringify(response2.data))
             targetMessages.push(data)
           })
-          .catch((err: any) => {
+          .catch((err) => {
             throw err
           })
       }
@@ -136,7 +136,7 @@ ${formatter.value.separator()}
       })
       outputText.value += `\nこの文章は ${formatter.value.link(process.env.VUE_APP_BASE_URL, APP_TITLE)} によって生成されました`
     })
-    .catch((err: any) => {
+    .catch((err) => {
       throw err
     })
 }
@@ -155,7 +155,7 @@ function copyOutputText() {
         text: "クリップボードにコピーしました",
       })
     })
-    .catch((err: any) => {
+    .catch((err) => {
       throw err
     })
 }
