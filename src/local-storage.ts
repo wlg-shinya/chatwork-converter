@@ -6,7 +6,7 @@ const LocalStorage = {
         }
         return d[key]
     },
-    save(data: any, key: string) {
+    save(data: object, key: string) {
         const d = fetch()
         d[key] = data
         save(d)
@@ -17,7 +17,7 @@ const STORAGE_KEY = process.env.VUE_APP_STORAGE_KEY
 function fetch() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}")
 }
-function save(data: any) {
+function save(data: object) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
 }
 
