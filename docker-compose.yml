@@ -1,27 +1,17 @@
 services:
   frontend:
-    container_name: frontend-dev
-    image: chatconv-dev
+    image: chatconv-prod
     build:
       context: .
       dockerfile: Dockerfile
-      target: dev
+      target: prod
     ports:
       - "127.0.0.1:8080:8080"
-    volumes:
-      - .:/usr/src/app
-    command: npm run serve
+    command: serve -s ./dist -p 8080
     depends_on:
       - backend
   backend:
-    container_name: backend-dev
-    image: chatconv-dev
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: dev
+    image: chatconv-prod
     ports:
       - "127.0.0.1:3000:3000"
-    volumes:
-      - .:/usr/src/app
-    command: sh -c 'npm run express:build && npm run express:run'
+    command: node ./dist/srv/index.js
