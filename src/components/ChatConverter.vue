@@ -86,10 +86,10 @@ function createOutputText() {
     .then(async (response) => {
       const data = JSON.parse(JSON.stringify(response.data))
       // 削除済みメッセージを除外
-      const messages = data.filter((x: any) => x.body != "[deleted]")
+      const messages = data.filter((x: any) => x.body != "[deleted]") // eslint-disable-line @typescript-eslint/no-explicit-any
       // 指定メッセージがどこにあるか特定する
       let startIndex = -1
-      messages.some((x: any, i: number) => {
+      messages.some((x: any, i: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         if (x.message_id == messageId) {
           startIndex = i
           return true
@@ -121,7 +121,7 @@ function createOutputText() {
       }
       // メッセージを出力用に整形
       outputText.value = `${formatter.value.separator()}`
-      targetMessages.forEach((x: any) => {
+      targetMessages.forEach((x: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const name = x.account.name
         const body = x.body
         const time = new Date(x.send_time * 1000) // send_time は秒なのでミリ秒に変換
