@@ -14,7 +14,12 @@ export default class ConfluenceFormatter implements Formatter {
         return "----"
     }
     body(text: string) {
+        // console.log(text)
         let newbody = text
+        // [title][dtext:file_uploaded][/title] -> 除去
+        // [download:*] -> タグのみ除去。infoタグに囲まれたファイル名が残ります
+        newbody = newbody.replace(/\[title\]\[dtext:file_uploaded\]\[\/title\]/g, "")
+        newbody = newbody.replace(/\[download:.*\](.*)\[\/download\]/g, "$1")
         // [qt][qtmeta *][/qt] -> bq.
         newbody = newbody.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/gs, "bq. $1\n")
         // [toall] -> 【ToALL】
