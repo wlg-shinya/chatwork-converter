@@ -3,6 +3,7 @@ import { ref, watchEffect, computed } from "vue"
 import axios from "axios"
 import { notify } from "@kyvg/vue3-notification"
 import LocalStorage from "@/local-storage"
+import GlobalSettings from '@/global-settings'
 import ConfluenceFormatter from "@/formatter/confluence-formatter"
 import MarkdownFormatter from "@/formatter/markdown-formatter"
 
@@ -20,7 +21,7 @@ const CONFLUENCE_FORMATTER = new ConfluenceFormatter()
 FORMAT.set("markdown", "Markdown")
 const MARKDOWN_FORMATTER = new MarkdownFormatter()
 
-const APP_TITLE = `${process.env.VUE_APP_TITLE} version ${process.env.VUE_APP_VERSION}`
+const APP_TITLE = `${GlobalSettings.title} version ${process.env.VUE_APP_VERSION}`
 const CHATWORK_NAME = "Chatwork"
 const MESSAGE_URL_REQEXP = /.*rid([0-9]+)-([0-9]+)/
 const TARGET_MESSAGE_COUNT = { MIN: 1, MAX: 100 }
@@ -134,7 +135,7 @@ ${formatter.value.body(body)}
 ${formatter.value.separator()}
 `
       })
-      outputText.value += `\nこの文章は ${formatter.value.link(process.env.VUE_APP_BASE_URL, APP_TITLE)} によって生成されました`
+      outputText.value += `\nこの文章は ${formatter.value.link(GlobalSettings.baseUrl, APP_TITLE)} によって生成されました`
     })
     .catch((err) => {
       throw err

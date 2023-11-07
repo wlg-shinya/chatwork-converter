@@ -2,6 +2,7 @@ import * as express from "express"
 import axios from "axios"
 import * as cors from "cors"
 import 'dotenv/config'
+import GlobalSettings from '../src/global-settings'
 
 // URLクエリパラメータから値を得る
 function queryValue(req: any, name: string, defaultValue?: any, outputLog = true) {
@@ -31,7 +32,7 @@ app.use(express.json())
 app.use(cors())
 const port = process.env.PORT || 3000
 app.listen(port, () => {
-  console.log(`[${date()}] Server running at: ${process.env.VUE_APP_BACKEND_URL}`)
+  console.log(`[${date()}] Server running at: ${GlobalSettings.backendUrl}`)
 })
 
 const token = process.env.VUE_APP_CHATWORK_API_TOKEN ?? ""
@@ -40,7 +41,7 @@ app.get('/api/chatwork_get_messages', (req, res) => {
   console.log(`[${date()}] /api/chatwork_get_message`)
   const room_id = queryValue(req, "room_id")
   // https://developer.chatwork.com/reference/get-rooms-room_id-messages
-  const config = { headers: { "x-chatworktoken": token }}
+  const config = { headers: { "x-chatworktoken": token } }
   axios
     .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages?force=1`, config)
     .then((response) => {
@@ -57,7 +58,7 @@ app.get('/api/chatwork_get_message', (req: any, res: any) => {
   const room_id = queryValue(req, "room_id")
   const message_id = queryValue(req, "message_id")
   // https://developer.chatwork.com/reference/get-rooms-room_id-messages-message_id
-  const config = { headers: { "x-chatworktoken": token }}
+  const config = { headers: { "x-chatworktoken": token } }
   axios
     .get(`https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`, config)
     .then((response) => {

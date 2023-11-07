@@ -1,10 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import GlobalSettings from './global-settings'
 
 // axios
 import VueAxios from 'vue-axios'
 import axios from 'axios'
-axios.defaults.baseURL = process.env.VUE_APP_BACKEND_URL
+axios.defaults.baseURL = GlobalSettings.backendUrl
 
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
