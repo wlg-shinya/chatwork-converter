@@ -17,7 +17,7 @@ npm run serve && npm run express
 npm run build && npm run express
 ```
 
-### Deploy
+## Deploy
 ```
 docker-compose build && docker-compose up
 ```
