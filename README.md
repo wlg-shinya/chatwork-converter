@@ -4,7 +4,7 @@
 ```
 npm install
 npm install -g serve
-echo VUE_APP_CHATWORK_API_TOKEN=\"{ChatworkAPI token}\" > .env
+echo VUE_APP_CHATWORK_API_TOKEN=\"{ChatworkAPI token}\" > .env.local
 ```
 
 ### Compiles and hot-reloads for development

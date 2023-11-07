@@ -1,7 +1,8 @@
 import * as express from "express"
 import axios from "axios"
 import * as cors from "cors"
-import 'dotenv/config'
+require('dotenv').config({ path: ".env" })
+require('dotenv').config({ path: ".env.local" })
 
 // URLクエリパラメータから値を得る
 function queryValue(req: any, name: string, defaultValue?: any, outputLog = true) {
