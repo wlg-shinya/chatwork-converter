@@ -9,15 +9,15 @@ echo VUE_APP_CHATWORK_API_TOKEN=\"{ChatworkAPI token}\" > .env
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve && npm run express:build && npm run express:run
+npm run serve && npm run express
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build && npm run express:run
+npm run build && npm run express
 ```
 
-### Docker
+### Deploy
 ```
 docker-compose build && docker-compose up
 ```
