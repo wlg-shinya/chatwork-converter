@@ -1,5 +1,3 @@
-import GlobalSettings from './global-settings'
-
 const LocalStorage = {
     fetch(key: string) {
         const d = fetch()
@@ -15,7 +13,7 @@ const LocalStorage = {
     },
 }
 
-const STORAGE_KEY = GlobalSettings.storageKey
+const STORAGE_KEY = process.env.VUE_APP_STORAGE_KEY
 function fetch() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}")
 }

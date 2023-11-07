@@ -2,7 +2,6 @@ import * as express from "express"
 import axios from "axios"
 import * as cors from "cors"
 import 'dotenv/config'
-import GlobalSettings from '../src/global-settings'
 
 // URLクエリパラメータから値を得る
 function queryValue(req: any, name: string, defaultValue?: any, outputLog = true) {
@@ -27,15 +26,16 @@ function date() {
   return (new Date()).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
 }
 
+const token = process.env.VUE_APP_CHATWORK_API_TOKEN ?? ""
+
 const app = express()
 app.use(express.json())
 app.use(cors())
 const port = process.env.PORT || 3000
 app.listen(port, () => {
-  console.log(`[${date()}] Server running at: ${GlobalSettings.backendUrl}`)
+  console.log(`[${date()}] Server running at: ${process.env.VUE_APP_BACKEND_URL}`)
+  console.log(`[${date()}]   Chatwork API is ${token ? "available!" : "unavailable..."}`)
 })
-
-const token = process.env.VUE_APP_CHATWORK_API_TOKEN ?? ""
 
 app.get('/api/chatwork_get_messages', (req, res) => {
   console.log(`[${date()}] /api/chatwork_get_message`)

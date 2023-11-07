@@ -14,4 +14,4 @@ services:
     image: chatconv-prod
     ports:
       - "3000:3000"
-    command: node ./dist/express/srv/index.js
+    command: node ./dist/srv/index.js

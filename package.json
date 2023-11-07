@@ -8,8 +8,8 @@
     "run": "serve -s ./dist -p 8080",
     "lint": "vue-cli-service lint",
     "express": "npm run express:build && npm run express:run",
-    "express:build": "sh -c './node_modules/.bin/tsc --outDir ./dist/express ./srv/index.ts'",
-    "express:run": "node ./dist/express/srv/index.js"
+    "express:build": "sh -c './node_modules/.bin/tsc --outDir ./dist/srv ./srv/index.ts'",
+    "express:run": "node ./dist/srv/index.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
