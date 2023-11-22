@@ -24,29 +24,18 @@ export class ConfluenceFormatter implements Formatter {
     return newbody;
   }
   convertTo(text: string) {
-    // [To:*]
     return text.replace(/\[To:.*\](.*)/g, "【To】$1");
   }
   convertToAll(text: string) {
-    // [toall]
     return text.replace(/\[toall\](.*)/g, "【ToALL】$1");
   }
   convertReply(text: string) {
-    // [rp *]
     return text.replace(/\[rp.*\](.*)/g, "【Re】$1");
   }
   convertQuote(text: string) {
-    // [qt][qtmeta *][/qt]
     return text.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/gs, "bq. $1\n");
   }
   convertInfo(text: string) {
-    // [info][title][dtext:file_uploaded][/title][preview id=1341384457 ht=16][download:1341384457]FILENAME (0 B)[/download][/info]
-    // [info][title][dtext:file_uploaded][/title][download:1341503124]FILENAME (0 B)[/download][/info]
-    // [info][title][dtext:task_added][/title][task aid=8638511 st=open lt=1705642989 ltype=date]TASK[/task][/info]
-    // [info][title][dtext:task_edited][/title][task aid=8638511 st=open lt=1704087789 ltype=date]TASK[/task][/info]
-    // [info][title][dtext:task_done][/title][task aid=8638511 st=done lt=1700791029 ltype=date]TASK[/task][/info]
-    // [info][title]TITLE[/title]BODY[/info]
-    // [info]BODY[/info]
     return (
       text
         // ファイル送信タグはファイル名部分だけ残す

@@ -14,20 +14,42 @@ export class MarkdownFormatter implements Formatter {
     return "___";
   }
   body(text: string) {
+    // console.log(text);
     let newbody = text;
-    // [toall] -> 【ToALL】
-    newbody = newbody.replace(/\[toall\](.*)/g, "【ToALL】$1");
-    // [To:*] -> 【To】
-    newbody = newbody.replace(/\[To:.*\](.*)/g, "【To】$1");
-    // [rp *] -> 【Re】
-    newbody = newbody.replace(/\[rp.*\](.*)/g, "【Re】$1");
-    // これまでの文章中にあるすべての改行コードの前にスペース2個追加
-    // 以降は改行コード前にスペースを入れる必要なし
+    // 文章中にあるすべての改行をMarkdownにとっての改行表現に変換
     newbody = newbody.replace(/\n/g, "  \n");
-    // [qt][qtmeta *][/qt] -> '> ' + 先頭と末尾に改行
-    newbody = newbody.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/g, "\n> $1\n");
+    // 各種タグ変換
+    newbody = this.convertTo(newbody);
+    newbody = this.convertToAll(newbody);
+    newbody = this.convertReply(newbody);
+    newbody = this.convertQuote(newbody);
+    newbody = this.convertInfo(newbody);
     // 先頭と末尾に改行追加
     newbody = `\n${newbody}\n`;
     return newbody;
+  }
+  convertTo(text: string) {
+    return text.replace(/\[To:.*\](.*)/g, "【To】$1  \n");
+  }
+  convertToAll(text: string) {
+    return text.replace(/\[toall\](.*)/g, "【ToALL】$1  \n");
+  }
+  convertReply(text: string) {
+    return text.replace(/\[rp.*\](.*)/g, "【Re】$1  \n");
+  }
+  convertQuote(text: string) {
+    return text.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/gs, "\n> $1\n");
+  }
+  convertInfo(text: string) {
+    return (
+      text
+        // ファイル送信タグはファイル名部分だけ残す
+        .replace(/\[info\]\[title\]\[dtext:file_uploaded\]\[\/title\].*\[download:.*\](.*)\[\/download\]\[\/info\]/g, "$1  \n")
+        // タスク関連タグは"【タスク状態】タスク文章"という形に変換
+        .replace(/\[info\]\[title\]\[dtext:(.*)\]\[\/title\]\[task .*\](.*)\[\/task\]\[\/info\]/gs, "【$1】\n$2  \n")
+        // それ以外のinfoタグはタイトルがあればヘッダに設定しつつテーブル化
+        .replace(/\[info\]\[title\](.*)\[\/title\](.*)\[\/info\]/gs, "\n|$1|\n|-|\n|$2|\n")
+        .replace(/\[info\](.*)\[\/info\]/gs, "\n||\n|-|\n|$1|\n")
+    );
   }
 }
