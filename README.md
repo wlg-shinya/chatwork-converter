@@ -3,25 +3,24 @@
 ## Project setup
 
 ```
-npm install
-npm install -g serve
-echo VITE_CHATWORK_API_TOKEN=\"{ChatworkAPI token}\" > .env.local
+$ npm install
+$ echo VITE_CHATWORK_API_TOKEN=\"{ChatworkAPI token}\" > .env.local
 ```
 
-### Compiles for development
+### Build and run for development
 
 ```
-npm run dev && npm run serve
+$ npm run dev && npm run serve
 ```
 
-### Compiles and minifies for production
+### Build and run for production
 
 ```
-npm run build && npm run preview && npm run serve
+$ npm run build && npm run preview && npm run serve
 ```
 
 ## Deploy
 
 ```
-docker-compose build && docker-compose up
+$ npm run clean && docker-compose up --build
 ```
