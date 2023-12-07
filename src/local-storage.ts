@@ -1,3 +1,5 @@
+const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
+
 const LocalStorage = {
   fetch(key: string) {
     const d = fetch();
@@ -13,7 +15,6 @@ const LocalStorage = {
   },
 };
 
-const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
 function fetch() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 }

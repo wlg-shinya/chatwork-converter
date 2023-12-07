@@ -4,7 +4,7 @@
 
 ```
 $ npm install
-$ echo VITE_CHATWORK_API_TOKEN=\"{ChatworkAPI token}\" > .env.local
+$ echo CHATWORK_API_TOKEN=\"{ChatworkAPI token}\" > .env.local
 ```
 
 ### Build and run for development

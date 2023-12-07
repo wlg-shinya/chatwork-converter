@@ -31,13 +31,11 @@ function date() {
   return new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
 }
 
-const token = process.env.VITE_CHATWORK_API_TOKEN ?? "";
-
 const app = express();
 app.use(express.json());
 app.use(cors());
 const port = process.env.VITE_BACKEND_PORT ?? "";
-const CHATWORK_API_TOKEN = process.env.VITE_CHATWORK_API_TOKEN ?? "";
+const CHATWORK_API_TOKEN = process.env.CHATWORK_API_TOKEN ?? "";
 app.listen(port, () => {
   // URL＆ポート番号
   console.log(`[${date()}] Server URL: ${process.env.VITE_BASE_URL}:${port}`);
