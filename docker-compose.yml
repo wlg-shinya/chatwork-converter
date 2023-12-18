@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: chatconv
+    image: chatwork-converter
     restart: always
     build:
       context: .
@@ -12,7 +12,7 @@ services:
     depends_on:
       - backend
   backend:
-    image: chatconv
+    image: chatwork-converter
     restart: always
     ports:
       - "8201:8201"
