@@ -39,12 +39,12 @@ export class ConfluenceFormatter implements Formatter {
     return (
       text
         // ファイル送信タグはファイル名部分だけ残す
-        .replace(/\[info\]\[title\]\[dtext:file_uploaded\]\[\/title\].*\[download:.*\](.*)\[\/download\]\[\/info\]/g, "$1")
+        .replace(/\[info\]\[title\]\[dtext:file_uploaded\]\[\/title\].*?\[download:.*\]\s*(.*?)\s*\[\/download\]\[\/info\]/g, "$1")
         // タスク関連タグは"【タスク状態】タスク文章"という形に変換
-        .replace(/\[info\]\[title\]\[dtext:(.*)\]\[\/title\]\[task .*\](.*)\[\/task\]\[\/info\]/gs, "【$1】\n$2")
+        .replace(/\[info\]\[title\]\[dtext:(.*?)\]\[\/title\]\[task .*?\]\s*(.*?)\s*\[\/task\]\[\/info\]/gs, "【$1】\n$2")
         // それ以外のinfoタグはタイトルがあればヘッダにしてテーブル化
-        .replace(/\[info\]\[title\](.*)\[\/title\](.*)\[\/info\]/gs, "\n||$1||\n|$2|\n")
-        .replace(/\[info\](.*)\[\/info\]/gs, "\n|$1|\n")
+        .replace(/\[info\]\[title\]\s*(.*?)\s*\[\/title\]\s*(.*?)\s*\[\/info\]/gs, `\n||$1||\n|$2|\n`)
+        .replace(/\[info\]\s*(.*?)\s*\[\/info\]/gs, "\n|$1|\n")
     );
   }
 }
