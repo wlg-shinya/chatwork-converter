@@ -1,4 +1,5 @@
 import { Formatter } from "./formatter-interface";
+import { default as ChatworkTagConverter } from "./chatwork-tag-converter";
 
 export class ConfluenceFormatter implements Formatter {
   howToPaste() {
@@ -15,36 +16,20 @@ export class ConfluenceFormatter implements Formatter {
   }
   body(text: string) {
     // console.log(text);
-    let newbody = text;
-    newbody = this.convertTo(newbody);
-    newbody = this.convertToAll(newbody);
-    newbody = this.convertReply(newbody);
-    newbody = this.convertQuote(newbody);
-    newbody = this.convertInfo(newbody);
-    return newbody;
-  }
-  convertTo(text: string) {
-    return text.replace(/\[To:.*\](.*)/g, "【To】$1");
-  }
-  convertToAll(text: string) {
-    return text.replace(/\[toall\](.*)/g, "【ToALL】$1");
-  }
-  convertReply(text: string) {
-    return text.replace(/\[rp.*\](.*)/g, "【Re】$1");
-  }
-  convertQuote(text: string) {
-    return text.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/gs, "bq. $1\n");
-  }
-  convertInfo(text: string) {
-    return (
-      text
-        // ファイル送信タグはファイル名部分だけ残す
-        .replace(/\[info\]\[title\]\[dtext:file_uploaded\]\[\/title\].*?\[download:.*\]\s*(.*?)\s*\[\/download\]\[\/info\]/g, "$1")
-        // タスク関連タグは"【タスク状態】タスク文章"という形に変換
-        .replace(/\[info\]\[title\]\[dtext:(.*?)\]\[\/title\]\[task .*?\]\s*(.*?)\s*\[\/task\]\[\/info\]/gs, "【$1】\n$2")
-        // それ以外のinfoタグはタイトルがあればヘッダにしてテーブル化
-        .replace(/\[info\]\[title\]\s*(.*?)\s*\[\/title\]\s*(.*?)\s*\[\/info\]/gs, `\n||$1||\n|$2|\n`)
-        .replace(/\[info\]\s*(.*?)\s*\[\/info\]/gs, "\n|$1|\n")
-    );
+    let result = text;
+    // 各種タグ変換
+    const removeBlankLine = (src: string): string => src.replace(/\n\s/g, "");
+    result = ChatworkTagConverter.to(result, (_match, ...p) => `【To】${p[0]}`);
+    result = ChatworkTagConverter.toall(result, (_match, ...p) => `【ToALL】${p[0]}`);
+    result = ChatworkTagConverter.reply(result, (_match, ...p) => `【Re】${p[0]}`);
+    result = ChatworkTagConverter.quote(result, (_match, ...p) => `bq. ${p[0]}\n`);
+    result = ChatworkTagConverter.fileUploaded(result, (_match, ...p) => `${p[0]}`);
+    result = ChatworkTagConverter.task(result, (_match, ...p) => `【${p[0]}】\n${p[1]}`);
+    result = ChatworkTagConverter.infoWithTitle(result, (_match, ...p) => {
+      // 空白行があるとテーブルと認識されなくなるので削除
+      return `\n||${p[0]}||\n|${removeBlankLine(p[1])}|\n`;
+    });
+    result = ChatworkTagConverter.info(result, (_match, ...p) => `\n|${removeBlankLine(p[0])}|\n`);
+    return result;
   }
 }
