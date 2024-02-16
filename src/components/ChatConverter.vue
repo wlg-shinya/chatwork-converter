@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect, computed } from "vue";
+import { ref, watchEffect, watch, computed } from "vue";
 import axios from "axios";
 import { notify } from "@kyvg/vue3-notification";
 import LocalStorage from "../local-storage";
@@ -27,7 +27,7 @@ const formatKindDescription = (kind: FormatKind): string => {
   }
 };
 const formatter = computed(() => {
-  switch (formatKey.value) {
+  switch (formatKind.value) {
     case "html":
       return HtmlFormatter;
     case "markdown":
@@ -47,7 +47,10 @@ const LOCAL_STORAGE_TOP_NAME = "main";
 const messageLink = ref(route.query.message_link?.toString().trimEnd() || "");
 const targetMessageCount = ref(5);
 const outputText = ref("");
-const formatKey = ref<FormatKind>("confluence");
+const formatKind = ref<FormatKind>("confluence");
+watch(formatKind, () => {
+  outputText.value = "";
+});
 
 // ローカルストレージから初期設定を読み込む
 const localData = LocalStorage.fetch(LOCAL_STORAGE_TOP_NAME);
@@ -55,12 +58,12 @@ if (typeof localData.targetMessageCount !== "undefined") {
   targetMessageCount.value = localData.targetMessageCount;
 }
 if (typeof localData.formatKey !== "undefined") {
-  formatKey.value = localData.formatKey;
+  formatKind.value = localData.formatKey;
 }
 // 設定が変更され次第ローカルストレージへ保存
 watchEffect(() => {
   localData.targetMessageCount = targetMessageCount.value;
-  localData.formatKey = formatKey.value;
+  localData.formatKey = formatKind.value;
   LocalStorage.save(localData, LOCAL_STORAGE_TOP_NAME);
 });
 
@@ -196,7 +199,7 @@ function copyOutputText() {
       </div>
       <div class="form-group">
         <label class="font-weight-bold">フォーマット</label>
-        <select v-model="formatKey" class="custom-select">
+        <select v-model="formatKind" class="custom-select">
           <option v-for="kind in FORMAT_KIND" :key="kind" :value="kind">{{ formatKindDescription(kind) }}</option>
         </select>
       </div>
@@ -205,7 +208,10 @@ function copyOutputText() {
       <div class="form-group">
         <label class="font-weight-bold">出力結果</label>
         <div v-if="outputText">
-          <div class="alert alert-success" style="user-select: all">
+          <!-- HTML出力の場合はブラウザ描画結果をコピーする想定なのでinnerHTMLに流し込む -->
+          <div v-if="formatKind === 'html'" v-html="outputText" style="user-select: all" />
+          <!-- 上記以外のフォーマットはテキストとしてコピーするためpreタグで扱う -->
+          <div v-else class="alert alert-success" style="user-select: all">
             <button @click="copyOutputText()" class="btn btn-outline-success">
               <fa icon="copy" />
             </button>

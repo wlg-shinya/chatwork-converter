@@ -3,10 +3,10 @@ import { default as ChatworkTagConverter } from "./chatwork-tag-converter";
 
 class HtmlFormatter implements Formatter {
   howToPaste() {
-    return "？？？";
+    return "HTMLフォーマットの場合は書式コピーの都合があるので手動でコピーしてください。書式ペーストできる場所(ConfluenceやGoogleドキュメント等)でペーストしてください";
   }
   link(link: string, text = "") {
-    return `<a href="${link}>${text}</a>`;
+    return `<a href="${link}">${text}</a>`;
   } //<a href="http://sample.htm">サンプルサイトへ飛びます。</a>
   bold(text: string) {
     return `<b>${text}</b>`;
@@ -24,6 +24,7 @@ class HtmlFormatter implements Formatter {
     result = ChatworkTagConverter.task(result, (_match, ...p) => `<div><div>【${p[0]}】</div><span>${p[1]}</span></div>`);
     result = ChatworkTagConverter.infoWithTitle(result, (_match, ...p) => `<div><div>【${p[0]}】</div><span>${p[1]}</span></div>`);
     result = ChatworkTagConverter.info(result, (_match, ...p) => `<div>${p[0]}</div>`);
+    result = `<div>${result}</div>`;
     return result;
   }
 }
