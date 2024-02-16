@@ -3,7 +3,7 @@ import { default as ChatworkTagConverter } from "./chatwork-tag-converter";
 
 class HtmlFormatter implements Formatter {
   howToPaste() {
-    return "HTMLフォーマットの場合は書式コピーの都合があるので手動でコピーしてください。書式ペーストできる場所(ConfluenceやGoogleドキュメント等)でペーストしてください";
+    return "書式までペーストできる場所(ConfluenceやGoogleドキュメント等)でペーストしてください。特にGoogleドキュメントは一部要素の幅もコピーするのでブラウザを縮小してからコピーすると見た目が崩れづらいです";
   }
   link(link: string, text = "") {
     return `<a href="${link}">${text}</a>`;

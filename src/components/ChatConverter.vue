@@ -185,7 +185,7 @@ function copyOutputText() {
         <label class="font-weight-bold">使い方</label>
         <ol>
           <li>{{ CHATWORK_NAME }}で残したいやり取りの先頭のメッセージリンクを「先頭メッセージリンク」にコピペして変換ボタンを押します</li>
-          <li>出力結果をコピーします。 <fa icon="copy" /> を押してもコピーされます。手動コピーでも大丈夫です</li>
+          <li>出力結果をコピーします。</li>
           <li>{{ formatter.howToPaste() }}</li>
         </ol>
       </div>
@@ -223,6 +223,7 @@ function copyOutputText() {
     <div class="card-footer">
       <ul>
         <li>フォーマットを増やしてほしい！</li>
+        <li>コピペした結果が見づらいから直してほしい！</li>
         <li>〇〇な機能に対応してほしい！</li>
       </ul>
       ご要望は {{ CHATWORK_NAME }} 上で {{ ADMIN_EMAIL }} にコンタクトください
