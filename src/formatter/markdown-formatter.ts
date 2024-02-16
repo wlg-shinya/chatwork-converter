@@ -1,4 +1,5 @@
 import { Formatter } from "./formatter-interface";
+import { default as ChatworkTagConverter } from "./chatwork-tag-converter";
 
 export class MarkdownFormatter implements Formatter {
   howToPaste() {
@@ -15,41 +16,24 @@ export class MarkdownFormatter implements Formatter {
   }
   body(text: string) {
     // console.log(text);
-    let newbody = text;
+    let result = text;
     // 文章中にあるすべての改行をMarkdownにとっての改行表現に変換
-    newbody = newbody.replace(/\n/g, "  \n");
+    result = result.replace(/\n/g, "  \n");
     // 各種タグ変換
-    newbody = this.convertTo(newbody);
-    newbody = this.convertToAll(newbody);
-    newbody = this.convertReply(newbody);
-    newbody = this.convertQuote(newbody);
-    newbody = this.convertInfo(newbody);
+    const space2ToBr = (src: string): string => src.replace(/  /g, "<br>");
+    result = ChatworkTagConverter.to(result, (_match, ...p) => `【To】${p[0]}  \n`);
+    result = ChatworkTagConverter.toall(result, (_match, ...p) => `【ToALL】${p[0]}  \n`);
+    result = ChatworkTagConverter.reply(result, (_match, ...p) => `【Re】${p[0]}  \n`);
+    result = ChatworkTagConverter.quote(result, (_match, ...p) => `\n> ${p[0]}\n`);
+    result = ChatworkTagConverter.fileUploaded(result, (_match, ...p) => `${p[0]}  \n`);
+    result = ChatworkTagConverter.task(result, (_match, ...p) => `【${p[0]}】\n${p[1]}  \n`);
+    result = ChatworkTagConverter.infoWithTitle(result, (_match, ...p) => {
+      // テーブル内はスペース2では改行と判定されないため<br>で代用する
+      return `\n|${p[0]}|\n|-|\n|${space2ToBr(p[1])}|\n`;
+    });
+    result = ChatworkTagConverter.info(result, (_match, ...p) => `\n||\n|-|\n|${space2ToBr(p[0])}|\n`);
     // 先頭と末尾に改行追加
-    newbody = `\n${newbody}\n`;
-    return newbody;
-  }
-  convertTo(text: string) {
-    return text.replace(/\[To:.*\](.*)/g, "【To】$1  \n");
-  }
-  convertToAll(text: string) {
-    return text.replace(/\[toall\](.*)/g, "【ToALL】$1  \n");
-  }
-  convertReply(text: string) {
-    return text.replace(/\[rp.*\](.*)/g, "【Re】$1  \n");
-  }
-  convertQuote(text: string) {
-    return text.replace(/\[qt\]\[qtmeta.*\](.*)\[\/qt\]/gs, "\n> $1\n");
-  }
-  convertInfo(text: string) {
-    return (
-      text
-        // ファイル送信タグはファイル名部分だけ残す
-        .replace(/\[info\]\[title\]\[dtext:file_uploaded\]\[\/title\].*?\[download:.*\]\s*(.*?)\s*\[\/download\]\[\/info\]/g, "$1  \n")
-        // タスク関連タグは"【タスク状態】タスク文章"という形に変換
-        .replace(/\[info\]\[title\]\[dtext:(.*?)\]\[\/title\]\[task .*?\]\s*(.*?)\s*\[\/task\]\[\/info\]/gs, "【$1】\n$2  \n")
-        // それ以外のinfoタグはタイトルがあればヘッダに設定しつつテーブル化
-        .replace(/\[info\]\[title\]\s*(.*?)\s*\[\/title\]\s*(.*?)\s*\[\/info\]/gs, "\n|$1|\n|-|\n|$2|\n")
-        .replace(/\[info\]\s*(.*?)\s*\[\/info\]/gs, "\n||\n|-|\n|$1|\n")
-    );
+    result = `\n${result}\n`;
+    return result;
   }
 }
