@@ -3,7 +3,7 @@ import { ref, watchEffect, computed } from "vue";
 import axios from "axios";
 import { notify } from "@kyvg/vue3-notification";
 import LocalStorage from "../local-storage";
-import { ConfluenceFormatter, MarkdownFormatter } from "../formatter";
+import { ConfluenceFormatter, MarkdownFormatter, HtmlFormatter } from "../formatter";
 
 // クエリパラメータを得るためのvue-router
 import { useRoute } from "vue-router";
@@ -12,12 +12,31 @@ const route = useRoute();
 // できれば外部で設定したいもの
 const ADMIN_EMAIL = "s-watanabe@three-rings.net";
 
-// フォーマット種類
-const FORMAT = new Map();
-FORMAT.set("confluence", "Confluence Wiki");
-const CONFLUENCE_FORMATTER = new ConfluenceFormatter();
-FORMAT.set("markdown", "Markdown");
-const MARKDOWN_FORMATTER = new MarkdownFormatter();
+// フォーマット関連
+const FORMAT_KIND = ["confluence", "markdown", "html"] as const;
+type FormatKind = (typeof FORMAT_KIND)[number];
+const formatKindDescription = (kind: FormatKind): string => {
+  switch (kind) {
+    case "html":
+      return "HTML";
+    case "markdown":
+      return "Markdown";
+    case "confluence":
+    default:
+      return "Confluence Wiki";
+  }
+};
+const formatter = computed(() => {
+  switch (formatKey.value) {
+    case "html":
+      return HtmlFormatter;
+    case "markdown":
+      return MarkdownFormatter;
+    case "confluence":
+    default:
+      return ConfluenceFormatter;
+  }
+});
 
 const APP_TITLE = `${import.meta.env.VITE_APP_TITLE} version ${__APP_VERSION__}`;
 const CHATWORK_NAME = "Chatwork";
@@ -28,7 +47,7 @@ const LOCAL_STORAGE_TOP_NAME = "main";
 const messageLink = ref(route.query.message_link?.toString().trimEnd() || "");
 const targetMessageCount = ref(5);
 const outputText = ref("");
-const formatKey = ref("confluence");
+const formatKey = ref<FormatKind>("confluence");
 
 // ローカルストレージから初期設定を読み込む
 const localData = LocalStorage.fetch(LOCAL_STORAGE_TOP_NAME);
@@ -43,17 +62,6 @@ watchEffect(() => {
   localData.targetMessageCount = targetMessageCount.value;
   localData.formatKey = formatKey.value;
   LocalStorage.save(localData, LOCAL_STORAGE_TOP_NAME);
-});
-
-// フォーマッタ取得
-const formatter = computed(() => {
-  switch (formatKey.value) {
-    case "markdown":
-      return MARKDOWN_FORMATTER;
-    case "confluence":
-    default:
-      return CONFLUENCE_FORMATTER;
-  }
 });
 
 function validate() {
@@ -189,7 +197,7 @@ function copyOutputText() {
       <div class="form-group">
         <label class="font-weight-bold">フォーマット</label>
         <select v-model="formatKey" class="custom-select">
-          <option v-for="[key, value] in FORMAT" :key="key" :value="key">{{ value }}</option>
+          <option v-for="kind in FORMAT_KIND" :key="kind" :value="kind">{{ formatKindDescription(kind) }}</option>
         </select>
       </div>
       <button @click="createOutputText()" :disabled="!validate()" class="btn btn-success btn-lg">変換</button>

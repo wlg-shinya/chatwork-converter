@@ -1,7 +1,7 @@
 import { Formatter } from "./formatter-interface";
 import { default as ChatworkTagConverter } from "./chatwork-tag-converter";
 
-export class ConfluenceFormatter implements Formatter {
+class ConfluenceFormatter implements Formatter {
   howToPaste() {
     return 'Confluence編集画面にて挿入したい場所で＋ボタン押下後マークアップを選択。表示された画面で"ConfluenceWiki"を選択してペーストしてください';
   }
@@ -17,7 +17,6 @@ export class ConfluenceFormatter implements Formatter {
   body(text: string) {
     // console.log(text);
     let result = text;
-    // 各種タグ変換
     const removeBlankLine = (src: string): string => src.replace(/\n\s/g, "");
     result = ChatworkTagConverter.to(result, (_match, ...p) => `【To】${p[0]}`);
     result = ChatworkTagConverter.toall(result, (_match, ...p) => `【ToALL】${p[0]}`);
@@ -33,3 +32,5 @@ export class ConfluenceFormatter implements Formatter {
     return result;
   }
 }
+
+export default new ConfluenceFormatter();

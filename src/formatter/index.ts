@@ -1,3 +1,4 @@
 export type { Formatter } from "./formatter-interface";
-export { ConfluenceFormatter } from "./confluence-formatter";
-export { MarkdownFormatter } from "./markdown-formatter";
+export { default as ConfluenceFormatter } from "./confluence-formatter";
+export { default as MarkdownFormatter } from "./markdown-formatter";
+export { default as HtmlFormatter } from "./html-formatter";

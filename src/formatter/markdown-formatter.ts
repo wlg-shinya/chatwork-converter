@@ -1,7 +1,7 @@
 import { Formatter } from "./formatter-interface";
 import { default as ChatworkTagConverter } from "./chatwork-tag-converter";
 
-export class MarkdownFormatter implements Formatter {
+class MarkdownFormatter implements Formatter {
   howToPaste() {
     return "Markdownに対応したお好きな場所でペーストしてください";
   }
@@ -37,3 +37,5 @@ export class MarkdownFormatter implements Formatter {
     return result;
   }
 }
+
+export default new MarkdownFormatter();
