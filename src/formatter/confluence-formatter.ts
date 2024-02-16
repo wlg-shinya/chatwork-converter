@@ -15,7 +15,6 @@ class ConfluenceFormatter implements Formatter {
     return "----";
   }
   body(text: string) {
-    // console.log(text);
     let result = text;
     const removeBlankLine = (src: string): string => src.replace(/\n\s/g, "");
     result = ChatworkTagConverter.to(result, (_match, ...p) => `【To】${p[0]}`);

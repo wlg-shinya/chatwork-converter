@@ -15,7 +15,6 @@ class MarkdownFormatter implements Formatter {
     return "___";
   }
   body(text: string) {
-    // console.log(text);
     let result = text;
     // 文章中にあるすべての改行をMarkdownにとっての改行表現に変換
     result = result.replace(/\n/g, "  \n");
